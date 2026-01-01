@@ -1,0 +1,74 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  background: #111;
+  color: #eee;
+}
+
+header {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+nav {
+  margin-top: 0.5rem;
+}
+
+nav a {
+  color: #ccc;
+  text-decoration: none;
+  margin: 0 0.75rem;
+  font-size: 0.9rem;
+}
+
+nav a:hover {
+  color: #fff;
+}
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1.5rem;
+}
+
+/* RIGA ORIZZONTALE */
+.row {
+  display: flex;
+  gap: 1rem;
+  overflow-x: hidden; /* nasconde scrollbar */
+  padding-bottom: 0.5rem;
+}
+
+/* DIMENSIONE BASE DELLE FOTO */
+.row img {
+  height: auto;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+/* LANDSCAPE: 3 immagini visibili */
+.row.landscape img {
+  aspect-ratio: 3 / 2;
+  width: calc((100% - 2rem) / 3); /* 3 immagini + 2 gap da 1rem */
+}
+
+/* PORTRAIT: 5 immagini visibili */
+.row.portrait img {
+  aspect-ratio: 2 / 3;
+  width: calc((100% - 4rem) / 5); /* 5 immagini + 4 gap da 1rem */
+  height: auto;
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.8rem;
+  color: #777;
+}

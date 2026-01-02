@@ -1,27 +1,50 @@
-/* Reset base */
+/* =========================
+   RESET BASE
+========================= */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Corpo e layout generale */
+/* =========================
+   CORPO E LAYOUT GENERALE
+========================= */
+html, body {
+  height: 100%;                /* altezza piena della viewport */
+  overflow-y: scroll;          /* abilita scroll verticale */
+  scrollbar-width: none;       /* Firefox: nasconde scrollbar */
+}
+
+body::-webkit-scrollbar {
+  width: 0px;                  /* Chrome/Safari: nasconde scrollbar */
+  background: transparent;
+}
+
 body {
   font-family: system-ui, sans-serif;
   background: #111;
   color: #eee;
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* footer sempre in basso */
+  min-height: 100vh;           /* permette footer sempre in basso */
 }
 
+/* =========================
+   HEADER
+========================= */
 header {
-  padding: 1.5rem;
+  padding: 0.25rem 0;          /* riduce padding verticale */
   text-align: center;
 }
 
-nav {
-  margin-top: 0.5rem;
+header h1 {
+  margin-bottom: 0.25rem;      /* riduce spazio sotto titolo */
+  font-size: 1.8rem;
+}
+
+header nav {
+  margin-top: 0.1rem;          /* meno spazio sopra link */
 }
 
 nav a {
@@ -35,42 +58,54 @@ nav a:hover {
   color: #fff;
 }
 
+/* =========================
+   HERO
+========================= */
+.hero {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;        /* centra orizzontalmente */
+  justify-content: center;    /* centra verticalmente */
+  gap: 0.75rem;               /* spazio tra immagine e bottone */
+  padding: 1rem 0;            /* padding sopra e sotto */
+  min-height: 60vh;           /* altezza minima per centrare contenuti */
+}
+
+.hero-image {
+  width: 45%;                 /* immagine leggermente più piccola */
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+
+/* BOTTONE HERO */
+.hero-button {
+  padding: 0.5rem 1.2rem;
+  font-size: 0.8rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #fff;
+  color: #111;
+  cursor: pointer;
+}
+
+.hero-button:hover {
+  background-color: #ddd;
+}
+
+/* =========================
+   GALLERIA / CAROSELLO
+========================= */
 .gallery {
-  flex: 1 0 auto;
+  flex: 1 0 auto;            /* cresce fino allo spazio disponibile */
   display: flex;
   flex-direction: column;
   gap: 2rem;
   padding: 1.5rem;
 }
 
-/* Righe landscape e portrait */
-.row {
-  display: flex;
-  gap: 1rem;
-  overflow-x: hidden; /* niente scrollbar */
-  padding-bottom: 0.5rem;
-}
-
-.row img {
-  height: auto;
-  object-fit: cover;
-  flex-shrink: 0;
-  border-radius: 4px;
-}
-
-/* LANDSCAPE: 3 immagini visibili */
-.row.landscape img {
-  aspect-ratio: 3 / 2;
-  width: calc((100% - 2rem) / 3);
-}
-
-/* PORTRAIT: 5 immagini visibili */
-.row.portrait img {
-  aspect-ratio: 2 / 3;
-  width: calc((100% - 4rem) / 5);
-}
-
-/* Carosello */
+/* Carosello Bootstrap */
 .carousel {
   position: relative;
   margin-bottom: 2rem;
@@ -78,7 +113,7 @@ nav a:hover {
 
 .carousel-item img {
   width: auto;
-  max-height: 350px; /* leggermente più piccole per vedere footer */
+  max-height: 350px;          /* immagini uniformi e visibili footer */
   margin: 0 auto;
   display: block;
   object-fit: cover;
@@ -88,21 +123,21 @@ nav a:hover {
 /* Frecce minimali bianche, senza cerchio */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-    background-color: transparent !important; /* rimuove sfondo grigio */
-    background-image: none !important;        /* rimuove icona default */
-    border: none;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none;
 }
 
 .carousel-control-prev-icon::after {
-    content: "<";      /* freccia sinistra */
-    color: #fff;
-    font-size: 2rem;
+  content: "<";               /* freccia sinistra */
+  color: #fff;
+  font-size: 2rem;
 }
 
 .carousel-control-next-icon::after {
-    content: ">";      /* freccia destra */
-    color: #fff;
-    font-size: 2rem;
+  content: ">";               /* freccia destra */
+  color: #fff;
+  font-size: 2rem;
 }
 
 /* Posizione frecce fuori dalle immagini */
@@ -116,14 +151,16 @@ nav a:hover {
 }
 
 .carousel-control-prev {
-  left: -3rem;
+  left: -3rem;                /* fuori immagine a sinistra */
 }
 
 .carousel-control-next {
-  right: -3rem;
+  right: -3rem;               /* fuori immagine a destra */
 }
 
-/* Footer sempre in basso */
+/* =========================
+   FOOTER
+========================= */
 footer {
   flex-shrink: 0;
   text-align: center;

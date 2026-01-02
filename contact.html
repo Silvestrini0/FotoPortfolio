@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Contatti | Luca Silvestrini</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* Layout body per footer sempre in fondo */
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      font-family: system-ui, sans-serif;
+      background-color: #111;
+      color: #eee;
+      margin: 0;
+    }
+
+    main {
+      flex: 1; /* prende tutto lo spazio disponibile tra header e footer */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      gap: 2rem;
+      text-align: center;
+    }
+
+    header {
+      padding: 0.5rem 0;
+      text-align: center;
+    }
+
+    header h1 {
+      margin-bottom: 0.25rem;
+      font-size: 1.8rem;
+    }
+
+    nav a {
+      color: #ccc;
+      text-decoration: none;
+      margin: 0 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    nav a:hover {
+      color: #fff;
+    }
+
+    .contact-section h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    .contact-info a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .contact-info a:hover {
+      color: #ddd;
+    }
+
+    /* Footer sempre in basso */
+    footer {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.8rem;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="text-center py-3">
+    <h1>Luca Silvestrini</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Galleria</a>
+      <a href="contact.html">Contatti</a>
+    </nav>
+  </header>
+
+  <!-- SEZIONE CONTATTI -->
+  <main class="contact-section">
+
+    <div class="contact-info">
+      <div>Email: <a href="mailto:silvestrinil173@gmail.com">silvestrinil173@gmail.com</a></div>
+      <div>Telefono: <a href="tel:+3891809811">+39 389 180 9811</a></div>
+      <div>Instagram: <a href="https://instagram.com/_silvestriniluca_" target="_blank">@_silvestriniluca_</a></div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="text-center py-3">
+    <p>© 2026 Luca Silvestrini</p>
+  </footer>
+
+</body>
+
+</html>

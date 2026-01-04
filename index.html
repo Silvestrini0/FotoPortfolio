@@ -3,42 +3,127 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Luca Silvestrini | Fotografia</title>
+  <title>Portfolio Fotografico</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <header class="text-center py-3">
-    <h1>Luca Silvestrini</h1>
+  <header class="header">
+    <div class="brand">
+      <strong>Silvestrini Luca</strong>
+      <span>Portfolio fotografico</span>
+    </div>
+
+    <div class="header-icons">
+      <!-- Instagram -->
+      <a href="https://instagram.com/_silvestriniluca_" target="_blank" class="icon-link"
+        aria-label="Seguimi su Instagram" title="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+      </a>
+
+      <!-- Email -->
+      <a href="mailto:silvestrinil173@gmail.com?subject=Contatto%20dal%20portfolio&body=Ciao%20Luca,%0D%0A%0D%0A[Scrivi%20qui%20il%20tuo%20messaggio]%0D%0A%0D%0ACordiali%20saluti,"
+        class="icon-link" aria-label="Invia email a silvestrinil173@gmail.com" title="Invia email"
+        onclick="setTimeout(() => { window.location.href = 'https://mail.google.com' }, 100);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </a>
+    </div>
   </header>
 
-  <main class="gallery container py-5 text-center">
+  <main>
 
-    <!-- HERO HOME -->
     <section class="hero">
-      <img src="img/foto8.webp" alt="Foto di copertina" class="hero-image">
-       <a href="gallery.html" class="btn btn-outline-light btn-lg">
-        Vai alla galleria
-      </a>
+      <h1>Esplora il Mondo Attraverso le Mie Foto</h1>
+      <p>
+        Scopri una collezione curata di fotografie che raccontano paesaggi,
+        persone e dettagli del mondo reale.
+      </p>
+    </section>
+
+    <!-- ADD THIS FILTERS SECTION -->
+    <section class="filters">
+      <button data-filter="tutte" class="filter active">Tutte</button>
+      <button data-filter="ritratti" class="filter">Ritratti</button>
+      <button data-filter="street" class="filter">Street</button>
+      <button data-filter="sportiva" class="filter">Sportiva</button>
+    </section>
+
+    <section class="gallery">
+      <!-- STREET -->
+      <article class="photo-card" data-category="Street">
+        <img src="img/foto3.webp" alt="">
+      </article>
+
+      <article class="photo-card" data-category="Street">
+        <img src="img/foto4.webp" alt="">
+      </article>
+
+      <article class="photo-card" data-category="Street">
+        <img src="img/foto5.webp" alt="">
+      </article>
+
+      <article class="photo-card" data-category="Street">
+        <img src="img/foto6.webp" alt="">
+      </article>
+
+      <article class="photo-card" data-category="Street">
+        <img src="img/foto7.webp" alt="">
+      </article>
+
+      <article class="photo-card" data-category="Street">
+        <img src="img/foto8.webp" alt="">
+      </article>
+
+      <article class="photo-card" data-category="Street">
+        <img src="img/foto9.webp" alt="">
+      </article>
+
+      <article class="photo-card" data-category="Street">
+        <img src="img/foto10.webp" alt="">
+      </article>
+
+      <article class="photo-card" data-category="Street">
+        <img src="img/foto11.webp" alt="">
+      </article>
+
+      <article class="photo-card" data-category="Street">
+        <img src="img/foto13.webp" alt="">
+      </article>
+
+      <!-- RITRATTI -->
+      <article class="photo-card" data-category="Ritratti">
+        <img src="img/foto2.webp" alt="">
+      </article>
+
+      <article class="photo-card" data-category="Ritratti">
+        <img src="img/foto12.webp" alt="">
+      </article>
+
+      <article class="photo-card" data-category="Ritratti">
+        <img src="img/foto1.webp" alt="">
+      </article>
     </section>
 
   </main>
 
-  <footer class="text-center py-3">
-    <p>© 2026 Luca Silvestrini</p>
+  <footer class="footer">
+    <div class="footer-content">
+      <p>&copy; <span id="current-year">2024</span> Silvestrini Luca. Tutti i diritti riservati.</p>
+    </div>
   </footer>
 
-  <!-- Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js">
-  </script>
-
+  <script src="script.js"></script>
 </body>
 
 </html>

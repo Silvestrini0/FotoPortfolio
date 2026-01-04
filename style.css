@@ -1,0 +1,220 @@
+/* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: system-ui, sans-serif;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 40px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.brand {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand strong {
+  font-size: 1.25rem;
+  color: #0f172a;
+}
+
+.brand span {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.header-icons {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.icon-link {
+  color: #64748b;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.icon-link:hover {
+  color: #ffffff;
+  background: #0f172a;
+  border-color: #0f172a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
+}
+
+.icon-link:active {
+  transform: translateY(0);
+}
+
+.icon-link svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.icon-link:hover svg {
+  transform: scale(1.1);
+}
+
+/* Instagram hover specifico */
+.icon-link[title="Instagram"]:hover {
+  background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+  border-color: transparent;
+}
+
+/* Email hover specifico */
+.icon-link[title="Email"]:hover {
+  background: #ea4335;
+  border-color: transparent;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header {
+    padding: 20px 24px;
+  }
+  
+  .header-icons {
+    gap: 12px;
+  }
+  
+  .icon-link {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .icon-link svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* HERO */
+.hero {
+  max-width: 900px;
+  margin: 80px auto 40px;
+  text-align: center;
+  padding: 0 20px;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.hero p {
+  color: #64748b;
+}
+
+/* FILTERS */
+.filters {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.filter {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  background: #f1f5f9;
+  cursor: pointer;
+}
+
+.filter.active {
+  background: #0f172a;
+  color: #ffffff;
+}
+
+/* GALLERY - MASONRY LAYOUT */
+.gallery {
+  max-width: 1200px;
+  margin: 0 auto 80px;
+  padding: 0 20px;
+  
+  /* Creates masonry columns */
+  column-count: 3;
+  column-gap: 24px;
+}
+
+.photo-card {
+  break-inside: avoid; /* Prevents images from breaking across columns */
+  margin-bottom: 24px;
+  border-radius: 16px;
+  overflow: hidden;
+  display: block;
+}
+
+.gallery img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 16px;
+  transition: transform 0.3s ease;
+}
+
+.gallery img:hover {
+  transform: scale(1.02);
+}
+
+/* Responsive columns */
+@media (max-width: 1024px) {
+  .gallery {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .gallery {
+    column-count: 1;
+  }
+}
+
+/* FOOTER */
+.footer {
+  background: #f8fafc;
+  border-top: 1px solid #e5e7eb;
+  padding: 32px 0;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.footer p {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Aggiungi un po' di spazio extra al gallery per separarlo dal footer */
+.gallery {
+  margin-bottom: 40px; /* Ridotto da 80px a 40px per bilanciare con il footer */
+}

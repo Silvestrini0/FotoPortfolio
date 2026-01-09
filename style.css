@@ -72,11 +72,11 @@ button.icon-link {
   margin: 0;
 }
 
-/* All icons turn BLACK on hover */
+/* DEFAULT HOVER - BLACK for all except specific overrides */
 .icon-link:hover {
   color: #ffffff;
-  background: #0f172a !important;
-  border-color: #0f172a !important;
+  background: #0f172a;
+  border-color: #0f172a;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
 }
@@ -97,23 +97,21 @@ button.icon-link {
   stroke: #ffffff;
 }
 
-/* Instagram hover - override with gradient */
+/* INSTAGRAM HOVER - Gradient (WINS because it's more specific) */
 .icon-link[title="Instagram"]:hover {
   background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D) !important;
   border-color: transparent !important;
 }
 
-/* Email hover - override with red */
-.icon-link[title="Email"]:hover {
+/* EMAIL HOVER - Red (WINS because it's more specific) */
+a.icon-link[title="Email"]:hover,
+a.icon-link[title="Invia email"]:hover {
   background: #ea4335 !important;
   border-color: transparent !important;
 }
 
-/* Theme toggle hover - same black as default */
-.icon-link[title="Cambia tema"]:hover {
-  background: #0f172a !important;
-  border-color: #0f172a !important;
-}
+/* THEME TOGGLE HOVER - Black (already default, no need to override) */
+/* No special rule needed - uses default black hover */
 
 /* THEME TOGGLE DUAL SVG STRUCTURE */
 .theme-toggle.icon-link {

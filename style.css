@@ -42,6 +42,7 @@ body {
   align-items: center;
 }
 
+/* ICON LINK BASE STYLES */
 .icon-link {
   color: #64748b;
   text-decoration: none;
@@ -54,12 +55,28 @@ body {
   border-radius: 50%;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
+  cursor: pointer;
+  position: relative;
 }
 
+/* Fix for button elements */
+button.icon-link {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  font-family: inherit;
+  outline: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* All icons turn BLACK on hover */
 .icon-link:hover {
   color: #ffffff;
-  background: #0f172a;
-  border-color: #0f172a;
+  background: #0f172a !important;
+  border-color: #0f172a !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
 }
@@ -68,6 +85,7 @@ body {
   transform: translateY(0);
 }
 
+/* SVG STYLES */
 .icon-link svg {
   width: 18px;
   height: 18px;
@@ -76,25 +94,59 @@ body {
 
 .icon-link:hover svg {
   transform: scale(1.1);
+  stroke: #ffffff;
 }
 
-/* Instagram hover specifico */
+/* Instagram hover - override with gradient */
 .icon-link[title="Instagram"]:hover {
-  background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
-  border-color: transparent;
+  background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D) !important;
+  border-color: transparent !important;
 }
 
-/* Email hover specifico */
+/* Email hover - override with red */
 .icon-link[title="Email"]:hover {
-  background: #ea4335;
-  border-color: transparent;
+  background: #ea4335 !important;
+  border-color: transparent !important;
 }
 
-/* HEADER ICONS - This should be in the main section */
-.header-icons {
-  display: flex;
-  gap: 16px;
-  align-items: center;
+/* Theme toggle hover - same black as default */
+.icon-link[title="Cambia tema"]:hover {
+  background: #0f172a !important;
+  border-color: #0f172a !important;
+}
+
+/* THEME TOGGLE DUAL SVG STRUCTURE */
+.theme-toggle.icon-link {
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-toggle.icon-link svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.theme-toggle .sun-icon {
+  display: block;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.theme-toggle .moon-icon {
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Dark mode - swap icons */
+[data-theme="dark"] .theme-toggle .sun-icon {
+  opacity: 0;
+}
+
+[data-theme="dark"] .theme-toggle .moon-icon {
+  opacity: 1;
 }
 
 /* Responsive */
@@ -103,9 +155,8 @@ body {
     padding: 20px 24px;
   }
   
-  /* Don't redefine .header-icons here, just adjust if needed */
   .header-icons {
-    gap: 12px; /* Just adjust the gap for mobile */
+    gap: 12px;
   }
   
   .icon-link {
@@ -231,34 +282,6 @@ body {
 /* DARK MODE STYLES     */
 /* ==================== */
 
-/* Theme toggle button styles */
-.theme-toggle {
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.theme-toggle .moon-icon {
-  display: none;
-}
-
-.theme-toggle .sun-icon {
-  display: block;
-}
-
-/* Dark mode icon states */
-[data-theme="dark"] .theme-toggle .moon-icon {
-  display: block;
-}
-
-[data-theme="dark"] .theme-toggle .sun-icon {
-  display: none;
-}
-
 /* System dark mode preference */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -289,16 +312,28 @@ body {
   }
   
   :root:not([data-theme="light"]) .icon-link:hover {
-    background: #475569;
+    background: #475569 !important;
+    border-color: #475569 !important;
     color: #ffffff;
   }
   
   :root:not([data-theme="light"]) .icon-link[title="Instagram"]:hover {
-    background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+    background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D) !important;
+    border-color: transparent !important;
   }
   
   :root:not([data-theme="light"]) .icon-link[title="Email"]:hover {
-    background: #ea4335;
+    background: #ea4335 !important;
+    border-color: transparent !important;
+  }
+  
+  :root:not([data-theme="light"]) .icon-link[title="Cambia tema"]:hover {
+    background: #475569 !important;
+    border-color: #475569 !important;
+  }
+  
+  :root:not([data-theme="light"]) .icon-link:hover svg {
+    stroke: #ffffff;
   }
   
   :root:not([data-theme="light"]) .hero p {
@@ -354,16 +389,28 @@ body {
 }
 
 [data-theme="dark"] .icon-link:hover {
-  background: #475569;
+  background: #475569 !important;
+  border-color: #475569 !important;
   color: #ffffff;
 }
 
 [data-theme="dark"] .icon-link[title="Instagram"]:hover {
-  background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+  background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D) !important;
+  border-color: transparent !important;
 }
 
 [data-theme="dark"] .icon-link[title="Email"]:hover {
-  background: #ea4335;
+  background: #ea4335 !important;
+  border-color: transparent !important;
+}
+
+[data-theme="dark"] .icon-link[title="Cambia tema"]:hover {
+  background: #475569 !important;
+  border-color: #475569 !important;
+}
+
+[data-theme="dark"] .icon-link:hover svg {
+  stroke: #ffffff;
 }
 
 [data-theme="dark"] .hero p {
@@ -389,7 +436,7 @@ body {
   color: #94a3b8;
 }
 
-/* Manual light mode override (if needed) */
+/* Manual light mode override */
 [data-theme="light"] {
   color-scheme: light;
 }
@@ -402,4 +449,9 @@ body {
 /* Smooth transitions for theme switching */
 body, .header, .brand strong, .brand span, .icon-link, .filter, .footer, .hero p, .footer p {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle .sun-icon,
+.theme-toggle .moon-icon {
+  transition: opacity 0.3s ease;
 }

@@ -9,6 +9,7 @@ body {
   font-family: system-ui, sans-serif;
   background: #ffffff;
   color: #0f172a;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* HEADER */
@@ -18,6 +19,7 @@ body {
   align-items: center;
   padding: 24px 40px;
   border-bottom: 1px solid #e5e7eb;
+  transition: border-color 0.3s ease;
 }
 
 .brand {
@@ -28,12 +30,14 @@ body {
 .brand strong {
   font-size: 1.25rem;
   color: #0f172a;
+  transition: color 0.3s ease;
 }
 
 .brand span {
   font-size: 0.875rem;
   color: #64748b;
   margin-top: 2px;
+  transition: color 0.3s ease;
 }
 
 .header-icons {
@@ -97,21 +101,22 @@ button.icon-link {
   stroke: #ffffff;
 }
 
-/* INSTAGRAM HOVER - Gradient (WINS because it's more specific) */
-.icon-link[title="Instagram"]:hover {
+/* INSTAGRAM HOVER - Gradient */
+.icon-link[title="Instagram"]:hover,
+.icon-link[title*="Instagram"]:hover {
   background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D) !important;
   border-color: transparent !important;
 }
 
-/* EMAIL HOVER - Red (WINS because it's more specific) */
-a.icon-link[title="Email"]:hover,
-a.icon-link[title="Invia email"]:hover {
+/* EMAIL/GMAIL HOVER - Red (always red on hover) */
+.icon-link[title="Email"]:hover,
+.icon-link[title="Invia email"]:hover,
+.icon-link[title*="email"]:hover,
+.icon-link[title*="Email"]:hover,
+.icon-link[title*="Gmail"]:hover {
   background: #ea4335 !important;
   border-color: transparent !important;
 }
-
-/* THEME TOGGLE HOVER - Black (already default, no need to override) */
-/* No special rule needed - uses default black hover */
 
 /* THEME TOGGLE DUAL SVG STRUCTURE */
 .theme-toggle.icon-link {
@@ -136,15 +141,6 @@ a.icon-link[title="Invia email"]:hover {
   display: block;
   opacity: 0;
   transition: opacity 0.3s ease;
-}
-
-/* Dark mode - swap icons */
-[data-theme="dark"] .theme-toggle .sun-icon {
-  opacity: 0;
-}
-
-[data-theme="dark"] .theme-toggle .moon-icon {
-  opacity: 1;
 }
 
 /* Responsive */
@@ -183,6 +179,7 @@ a.icon-link[title="Invia email"]:hover {
 
 .hero p {
   color: #64748b;
+  transition: color 0.3s ease;
 }
 
 /* FILTERS */
@@ -199,6 +196,7 @@ a.icon-link[title="Invia email"]:hover {
   border: none;
   background: #f1f5f9;
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .filter.active {
@@ -209,16 +207,14 @@ a.icon-link[title="Invia email"]:hover {
 /* GALLERY - MASONRY LAYOUT */
 .gallery {
   max-width: 1200px;
-  margin: 0 auto 80px;
+  margin: 0 auto 40px;
   padding: 0 20px;
-  
-  /* Creates masonry columns */
   column-count: 3;
   column-gap: 24px;
 }
 
 .photo-card {
-  break-inside: avoid; /* Prevents images from breaking across columns */
+  break-inside: avoid;
   margin-bottom: 24px;
   border-radius: 16px;
   overflow: hidden;
@@ -257,6 +253,7 @@ a.icon-link[title="Invia email"]:hover {
   padding: 32px 0;
   text-align: center;
   margin-top: 40px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .footer-content {
@@ -269,169 +266,120 @@ a.icon-link[title="Invia email"]:hover {
   color: #64748b;
   font-size: 0.875rem;
   line-height: 1.5;
-}
-
-/* Aggiungi un po' di spazio extra al gallery per separarlo dal footer */
-.gallery {
-  margin-bottom: 40px; /* Ridotto da 80px a 40px per bilanciare con il footer */
+  transition: color 0.3s ease;
 }
 
 /* ==================== */
 /* DARK MODE STYLES     */
 /* ==================== */
 
-/* System dark mode preference */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-  }
-  
-  :root:not([data-theme="light"]) body {
-    background: #0f172a;
-    color: #f8fafc;
-  }
-  
-  :root:not([data-theme="light"]) .header {
-    border-bottom-color: #334155;
-  }
-  
-  :root:not([data-theme="light"]) .brand strong {
-    color: #f8fafc;
-  }
-  
-  :root:not([data-theme="light"]) .brand span {
-    color: #cbd5e1;
-  }
-  
-  :root:not([data-theme="light"]) .icon-link {
-    background: #1e293b;
-    border-color: #334155;
-    color: #cbd5e1;
-  }
-  
-  :root:not([data-theme="light"]) .icon-link:hover {
-    background: #475569 !important;
-    border-color: #475569 !important;
-    color: #ffffff;
-  }
-  
-  :root:not([data-theme="light"]) .icon-link[title="Instagram"]:hover {
-    background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D) !important;
-    border-color: transparent !important;
-  }
-  
-  :root:not([data-theme="light"]) .icon-link[title="Email"]:hover {
-    background: #ea4335 !important;
-    border-color: transparent !important;
-  }
-  
-  :root:not([data-theme="light"]) .icon-link[title="Cambia tema"]:hover {
-    background: #475569 !important;
-    border-color: #475569 !important;
-  }
-  
-  :root:not([data-theme="light"]) .icon-link:hover svg {
-    stroke: #ffffff;
-  }
-  
-  :root:not([data-theme="light"]) .hero p {
-    color: #94a3b8;
-  }
-  
-  :root:not([data-theme="light"]) .filter {
-    background: #1e293b;
-    color: #cbd5e1;
-  }
-  
-  :root:not([data-theme="light"]) .filter.active {
-    background: #f8fafc;
-    color: #0f172a;
-  }
-  
-  :root:not([data-theme="light"]) .footer {
-    background: #1e293b;
-    border-top-color: #334155;
-  }
-  
-  :root:not([data-theme="light"]) .footer p {
-    color: #94a3b8;
-  }
-}
-
-/* Manual dark mode override */
-[data-theme="dark"] {
+/* Dark mode base styles */
+[data-theme="dark"],
+:root:not([data-theme="light"]) {
   color-scheme: dark;
 }
 
-[data-theme="dark"] body {
+[data-theme="dark"] body,
+:root:not([data-theme="light"]) body {
   background: #0f172a;
   color: #f8fafc;
 }
 
-[data-theme="dark"] .header {
+[data-theme="dark"] .header,
+:root:not([data-theme="light"]) .header {
   border-bottom-color: #334155;
 }
 
-[data-theme="dark"] .brand strong {
+[data-theme="dark"] .brand strong,
+:root:not([data-theme="light"]) .brand strong {
   color: #f8fafc;
 }
 
-[data-theme="dark"] .brand span {
+[data-theme="dark"] .brand span,
+:root:not([data-theme="light"]) .brand span {
   color: #cbd5e1;
 }
 
-[data-theme="dark"] .icon-link {
+[data-theme="dark"] .icon-link,
+:root:not([data-theme="light"]) .icon-link {
   background: #1e293b;
   border-color: #334155;
   color: #cbd5e1;
 }
 
-[data-theme="dark"] .icon-link:hover {
+[data-theme="dark"] .icon-link:hover,
+:root:not([data-theme="light"]) .icon-link:hover {
   background: #475569 !important;
   border-color: #475569 !important;
   color: #ffffff;
 }
 
-[data-theme="dark"] .icon-link[title="Instagram"]:hover {
-  background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D) !important;
-  border-color: transparent !important;
-}
-
-[data-theme="dark"] .icon-link[title="Email"]:hover {
+/* Email/Gmail hover stays red in dark mode */
+[data-theme="dark"] .icon-link[title="Email"]:hover,
+[data-theme="dark"] .icon-link[title="Invia email"]:hover,
+[data-theme="dark"] .icon-link[title*="email"]:hover,
+[data-theme="dark"] .icon-link[title*="Email"]:hover,
+[data-theme="dark"] .icon-link[title*="Gmail"]:hover,
+:root:not([data-theme="light"]) .icon-link[title="Email"]:hover,
+:root:not([data-theme="light"]) .icon-link[title="Invia email"]:hover,
+:root:not([data-theme="light"]) .icon-link[title*="email"]:hover,
+:root:not([data-theme="light"]) .icon-link[title*="Email"]:hover,
+:root:not([data-theme="light"]) .icon-link[title*="Gmail"]:hover {
   background: #ea4335 !important;
   border-color: transparent !important;
 }
 
-[data-theme="dark"] .icon-link[title="Cambia tema"]:hover {
-  background: #475569 !important;
-  border-color: #475569 !important;
+/* Instagram hover stays gradient in dark mode */
+[data-theme="dark"] .icon-link[title="Instagram"]:hover,
+[data-theme="dark"] .icon-link[title*="Instagram"]:hover,
+:root:not([data-theme="light"]) .icon-link[title="Instagram"]:hover,
+:root:not([data-theme="light"]) .icon-link[title*="Instagram"]:hover {
+  background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D) !important;
+  border-color: transparent !important;
 }
 
-[data-theme="dark"] .icon-link:hover svg {
+[data-theme="dark"] .icon-link:hover svg,
+:root:not([data-theme="light"]) .icon-link:hover svg {
   stroke: #ffffff;
 }
 
-[data-theme="dark"] .hero p {
+[data-theme="dark"] .hero p,
+:root:not([data-theme="light"]) .hero p {
   color: #94a3b8;
 }
 
-[data-theme="dark"] .filter {
+[data-theme="dark"] .filter,
+:root:not([data-theme="light"]) .filter {
   background: #1e293b;
   color: #cbd5e1;
 }
 
-[data-theme="dark"] .filter.active {
+[data-theme="dark"] .filter.active,
+:root:not([data-theme="light"]) .filter.active {
   background: #f8fafc;
   color: #0f172a;
 }
 
-[data-theme="dark"] .footer {
+[data-theme="dark"] .footer,
+:root:not([data-theme="light"]) .footer {
   background: #1e293b;
   border-top-color: #334155;
 }
 
-[data-theme="dark"] .footer p {
+[data-theme="dark"] .footer p,
+:root:not([data-theme="light"]) .footer p {
   color: #94a3b8;
+}
+
+/* Theme toggle icons */
+[data-theme="dark"] .theme-toggle .sun-icon,
+:root:not([data-theme="light"]) .theme-toggle .sun-icon {
+  opacity: 0;
+}
+
+[data-theme="dark"] .theme-toggle .moon-icon,
+:root:not([data-theme="light"]) .theme-toggle .moon-icon {
+  opacity: 1;
 }
 
 /* Manual light mode override */
@@ -442,14 +390,4 @@ a.icon-link[title="Invia email"]:hover {
 [data-theme="light"] body {
   background: #ffffff;
   color: #0f172a;
-}
-
-/* Smooth transitions for theme switching */
-body, .header, .brand strong, .brand span, .icon-link, .filter, .footer, .hero p, .footer p {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-
-.theme-toggle .sun-icon,
-.theme-toggle .moon-icon {
-  transition: opacity 0.3s ease;
 }

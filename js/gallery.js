@@ -2,12 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const folderId = params.get('folder');
 
-  if (!folderId || !window.portfolioData) {
+  if (!folderId || typeof portfolioData === 'undefined') {
     window.location.href = 'index.html';
     return;
   }
 
-  const folder = window.portfolioData.find(f => f.id === folderId);
+  const folder = portfolioData.find(f => f.id === folderId);
   if (!folder || !folder.images.length) {
     window.location.href = 'index.html';
     return;

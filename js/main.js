@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('categories');
-  if (!container || !window.portfolioData) return;
+  if (!container || typeof portfolioData === 'undefined') return;
 
-  if (!window.portfolioData.length) {
+  if (!portfolioData.length) {
     container.innerHTML = '<p class="loading-text">Nessuna cartella trovata in img/. Crea una cartella con delle foto e fai push.</p>';
     return;
   }
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = document.createElement('div');
   grid.className = 'category-grid';
 
-  window.portfolioData.forEach(folder => {
+  portfolioData.forEach(folder => {
     const card = document.createElement('a');
     card.className = 'category-card';
     card.href = `gallery.html?folder=${encodeURIComponent(folder.id)}`;

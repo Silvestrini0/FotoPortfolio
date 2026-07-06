@@ -1,43 +1,62 @@
 document.addEventListener('DOMContentLoaded', function () {
     
     // ======================
+    // 0. CARICA ORDINE SALVATO
+    // ======================
+    
+    const gallery = document.querySelector('.gallery');
+    const savedOrder = localStorage.getItem('photoOrder');
+    if (savedOrder) {
+        try {
+            const order = JSON.parse(savedOrder);
+            const cards = document.querySelectorAll('.photo-card');
+            const cardMap = {};
+            cards.forEach(c => {
+                const src = c.querySelector('img').getAttribute('src');
+                cardMap[src] = c;
+            });
+            // Reorder based on saved order
+            order.forEach(src => {
+                if (cardMap[src]) gallery.appendChild(cardMap[src]);
+            });
+            // Append any new cards not in saved order
+            cards.forEach(c => {
+                const src = c.querySelector('img').getAttribute('src');
+                if (!order.includes(src)) gallery.appendChild(c);
+            });
+        } catch (e) {}
+    }
+
+    // ======================
     // 1. FILTRO DELLE FOTO
     // ======================
     
     const filterButtons = document.querySelectorAll('.filter');
-    const photoCards = document.querySelectorAll('.photo-card');
+
+    function applyFilter() {
+        const activeFilter = document.querySelector('.filter.active');
+        if (!activeFilter) return;
+        const filterValue = activeFilter.getAttribute('data-filter');
+        const photoCards = document.querySelectorAll('.photo-card');
+        photoCards.forEach(card => {
+            const category = card.getAttribute('data-category');
+            const filterValueLower = filterValue.toLowerCase();
+            const categoryLower = category.toLowerCase();
+            if (filterValueLower === 'tutte') {
+                card.style.display = 'block';
+            } else if (categoryLower === filterValueLower) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
 
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Remove active class from all buttons
             filterButtons.forEach(btn => btn.classList.remove('active'));
-
-            // Add active class to clicked button
             button.classList.add('active');
-
-            const filterValue = button.getAttribute('data-filter');
-
-            // Filter photo cards
-            photoCards.forEach(card => {
-                const category = card.getAttribute('data-category');
-
-                // Convert both to lowercase for case-insensitive comparison
-                const filterValueLower = filterValue.toLowerCase();
-                const categoryLower = category.toLowerCase();
-
-                // For "tutte", show all cards
-                if (filterValueLower === 'tutte') {
-                    card.style.display = 'block';
-                }
-                // For other filters, show matching categories
-                else if (categoryLower === filterValueLower) {
-                    card.style.display = 'block';
-                }
-                // Hide non-matching cards
-                else {
-                    card.style.display = 'none';
-                }
-            });
+            applyFilter();
         });
     });
 
@@ -97,5 +116,82 @@ document.addEventListener('DOMContentLoaded', function () {
             htmlElement.setAttribute('data-theme', newTheme);
         }
     });
+
+    // ======================
+    // 4. DRAG & DROP
+    // ======================
+    
+    let draggedCard = null;
+
+    function initDragDrop() {
+        const cards = document.querySelectorAll('.photo-card');
+        cards.forEach(card => {
+            card.addEventListener('dragstart', handleDragStart);
+            card.addEventListener('dragover', handleDragOver);
+            card.addEventListener('dragenter', handleDragEnter);
+            card.addEventListener('dragleave', handleDragLeave);
+            card.addEventListener('drop', handleDrop);
+            card.addEventListener('dragend', handleDragEnd);
+        });
+    }
+
+    function handleDragStart(e) {
+        draggedCard = this;
+        this.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', '');
+    }
+
+    function handleDragOver(e) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDragEnter(e) {
+        e.preventDefault();
+        if (this !== draggedCard) {
+            this.classList.add('drag-over');
+        }
+    }
+
+    function handleDragLeave() {
+        this.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        this.classList.remove('drag-over');
+        if (draggedCard && this !== draggedCard) {
+            const parent = this.parentNode;
+            const allCards = [...parent.querySelectorAll('.photo-card')];
+            const dropIndex = allCards.indexOf(this);
+            const dragIndex = allCards.indexOf(draggedCard);
+            if (dropIndex < dragIndex) {
+                parent.insertBefore(draggedCard, this);
+            } else {
+                parent.insertBefore(draggedCard, this.nextSibling);
+            }
+            saveOrder();
+            applyFilter();
+        }
+    }
+
+    function handleDragEnd() {
+        this.classList.remove('dragging');
+        document.querySelectorAll('.photo-card').forEach(c => c.classList.remove('drag-over'));
+        draggedCard = null;
+    }
+
+    function saveOrder() {
+        const cards = document.querySelectorAll('.photo-card');
+        const order = [];
+        cards.forEach(c => {
+            const src = c.querySelector('img').getAttribute('src');
+            order.push(src);
+        });
+        localStorage.setItem('photoOrder', JSON.stringify(order));
+    }
+
+    initDragDrop();
 
 });

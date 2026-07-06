@@ -219,6 +219,21 @@ button.icon-link {
   border-radius: 16px;
   overflow: hidden;
   display: block;
+  cursor: grab;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease;
+}
+
+.photo-card:active {
+  cursor: grabbing;
+}
+
+.photo-card.dragging {
+  opacity: 0.4;
+}
+
+.photo-card.drag-over {
+  box-shadow: 0 0 0 3px #0f172a;
+  border-radius: 16px;
 }
 
 .gallery img {
@@ -358,6 +373,11 @@ button.icon-link {
 :root:not([data-theme="light"]) .filter.active {
   background: #f8fafc;
   color: #0f172a;
+}
+
+[data-theme="dark"] .photo-card.drag-over,
+:root:not([data-theme="light"]) .photo-card.drag-over {
+  box-shadow: 0 0 0 3px #f8fafc;
 }
 
 [data-theme="dark"] .footer,

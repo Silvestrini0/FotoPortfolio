@@ -1,9 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('categories');
-  if (!container || typeof portfolioData === 'undefined') return;
+  if (!container) {
+    document.body.insertAdjacentHTML('afterbegin', '<p style="color:red;position:fixed;z-index:999;background:#000;padding:10px;">ERRORE: #categories non trovato</p>');
+    return;
+  }
+
+  if (typeof portfolioData === 'undefined') {
+    container.innerHTML = '<p class="loading-text">ERRORE: portfolioData non definito. js/data.js non si è caricato.</p>';
+    return;
+  }
 
   if (!portfolioData.length) {
-    container.innerHTML = '<p class="loading-text">Nessuna cartella trovata in img/. Crea una cartella con delle foto e fai push.</p>';
+    container.innerHTML = '<p class="loading-text">Nessuna cartella trovata in img/.</p>';
     return;
   }
 
@@ -19,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     img.src = folder.cover;
     img.alt = folder.name;
     img.loading = 'lazy';
+    img.onerror = () => console.error('Immagine non caricata:', folder.cover);
 
     const overlay = document.createElement('div');
     overlay.className = 'overlay';
@@ -37,4 +46,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   container.appendChild(grid);
+  console.log('OK: portfolio caricato con', portfolioData.length, 'cartelle');
 });

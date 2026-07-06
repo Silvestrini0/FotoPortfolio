@@ -1,4 +1,4 @@
-const GITHUB_REPO = 'silvestriniluca/FotoPortfolio';
+const GITHUB_REPO = 'Silvestrini0/FotoPortfolio';
 const GITHUB_BRANCH = 'main';
 const CACHE_KEY = 'portfolio_data';
 const CACHE_TTL = 60 * 60 * 1000;

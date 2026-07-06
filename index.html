@@ -1,77 +1,41 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
   <meta charset="UTF-8">
-  <title>Portfolio Fotografico</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Silvestrini Luca - Portfolio</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-  <header class="header">
-    <div class="brand">
-      <strong>Silvestrini Luca</strong>
-      <span>Portfolio fotografico</span>
+  <nav>
+    <div class="nav-left">
+      <a href="index.html">WORK</a>
+      <a href="about.html">ABOUT</a>
     </div>
+    <div class="nav-links">
+      <a href="index.html">SILVESTRINI LUCA</a>
+    </div>
+  </nav>
 
-    <div class="header-icons">
-      <button class="theme-toggle icon-link" aria-label="Cambia tema" title="Cambia tema chiaro/scuro">
-        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="5"></circle>
-          <line x1="12" y1="1" x2="12" y2="3"></line>
-          <line x1="12" y1="21" x2="12" y2="23"></line>
-          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-          <line x1="1" y1="12" x2="3" y2="12"></line>
-          <line x1="21" y1="12" x2="23" y2="12"></line>
-          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-        </svg>
-        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-      </button>
+  <section class="hero">
+    <h1>Silvestrini Luca</h1>
+    <h2>PORTFOLIO</h2>
+  </section>
 
-      <a href="https://instagram.com/_silvestriniluca_" target="_blank" class="icon-link"
-        aria-label="Seguimi su Instagram" title="Instagram">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-        </svg>
-      </a>
+  <section class="categories" id="categories">
+  </section>
 
-      <a href="mailto:silvestrinil173@gmail.com?subject=Contatto%20dal%20portfolio&body=Ciao%20Luca,%0D%0A%0D%0A[Scrivi%20qui%20il%20tuo%20messaggio]%0D%0A%0D%0ACordiali%20saluti,"
-        class="icon-link" aria-label="Invia email a silvestrinil173@gmail.com" title="Invia email"
-        onclick="setTimeout(() => { window.location.href = 'https://mail.google.com' }, 100);">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-          <polyline points="22,6 12,13 2,6"></polyline>
-        </svg>
+  <footer>
+    <div class="social-links">
+      <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+        <img src="https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_24,h_24,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png" alt="Instagram">
       </a>
     </div>
-  </header>
-
-  <main>
-    <section class="timeline" id="timeline">
-      <div class="timeline__container"></div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="footer-content">
-      <p>&copy; <span id="current-year">2024</span> Silvestrini Luca. Tutti i diritti riservati.</p>
-    </div>
+    <p>&copy; 2025 by Silvestrini Luca</p>
   </footer>
 
-  <script src="photos.js"></script>
-  <script src="script.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
 </body>
-
 </html>

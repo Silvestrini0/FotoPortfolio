@@ -172,10 +172,10 @@ nav {
 
 /* Feed - colonna singola */
 .feed {
-  padding: 100vh 0 120px;
+  padding: 100vh 40px 120px;
   position: relative;
   z-index: 2;
-  max-width: 1200px;
+  max-width: 1020px;
   margin: 0 auto;
 }
 

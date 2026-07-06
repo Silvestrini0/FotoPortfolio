@@ -17,7 +17,6 @@
     </div>
 
     <div class="header-icons">
-      <!-- Theme Toggle Button - MOVED INSIDE HERE -->
       <button class="theme-toggle icon-link" aria-label="Cambia tema" title="Cambia tema chiaro/scuro">
         <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" stroke-width="2">
@@ -37,7 +36,6 @@
         </svg>
       </button>
 
-      <!-- Instagram -->
       <a href="https://instagram.com/_silvestriniluca_" target="_blank" class="icon-link"
         aria-label="Seguimi su Instagram" title="Instagram">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -48,7 +46,6 @@
         </svg>
       </a>
 
-      <!-- Email -->
       <a href="mailto:silvestrinil173@gmail.com?subject=Contatto%20dal%20portfolio&body=Ciao%20Luca,%0D%0A%0D%0A[Scrivi%20qui%20il%20tuo%20messaggio]%0D%0A%0D%0ACordiali%20saluti,"
         class="icon-link" aria-label="Invia email a silvestrinil173@gmail.com" title="Invia email"
         onclick="setTimeout(() => { window.location.href = 'https://mail.google.com' }, 100);">
@@ -59,23 +56,17 @@
         </svg>
       </a>
     </div>
-    <!-- CLOSING DIV FOR HEADER-ICONS IS HERE -->
   </header>
 
   <main>
-
-    <section class="hero">
-      <h1>Esplora il Mondo Attraverso le Mie Foto</h1>
-      <p>
-        Scopri una collezione curata di fotografie che raccontano paesaggi,
-        persone e dettagli del mondo reale.
-      </p>
+    <section class="tl-v" id="timeline"></section>
+    <section class="gallery-section" id="gallerySection">
+      <div class="gallery-header">
+        <h2 class="gallery-date" id="galleryDate"></h2>
+        <button class="gallery-back" id="galleryBack">← Torna alla timeline</button>
+      </div>
+      <div class="gallery" id="gallery"></div>
     </section>
-
-    <section class="timeline" id="timeline"></section>
-
-    <section class="gallery" id="gallery"></section>
-
   </main>
 
   <footer class="footer">

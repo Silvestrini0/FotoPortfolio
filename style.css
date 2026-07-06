@@ -46,7 +46,6 @@ body {
   align-items: center;
 }
 
-/* ICON LINK BASE STYLES */
 .icon-link {
   color: #64748b;
   text-decoration: none;
@@ -63,7 +62,6 @@ body {
   position: relative;
 }
 
-/* Fix for button elements */
 button.icon-link {
   appearance: none;
   -webkit-appearance: none;
@@ -76,7 +74,6 @@ button.icon-link {
   margin: 0;
 }
 
-/* DEFAULT HOVER - BLACK for all except specific overrides */
 .icon-link:hover {
   color: #ffffff;
   background: #0f172a;
@@ -89,7 +86,6 @@ button.icon-link {
   transform: translateY(0);
 }
 
-/* SVG STYLES */
 .icon-link svg {
   width: 18px;
   height: 18px;
@@ -101,14 +97,11 @@ button.icon-link {
   stroke: #ffffff;
 }
 
-/* INSTAGRAM HOVER - Gradient */
-.icon-link[title="Instagram"]:hover,
-.icon-link[title*="Instagram"]:hover {
+.icon-link[title="Instagram"]:hover {
   background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D) !important;
   border-color: transparent !important;
 }
 
-/* EMAIL/GMAIL HOVER - Red (always red on hover) */
 .icon-link[title="Email"]:hover,
 .icon-link[title="Invia email"]:hover,
 .icon-link[title*="email"]:hover,
@@ -118,7 +111,6 @@ button.icon-link {
   border-color: transparent !important;
 }
 
-/* THEME TOGGLE DUAL SVG STRUCTURE */
 .theme-toggle.icon-link {
   position: relative;
   overflow: hidden;
@@ -143,153 +135,249 @@ button.icon-link {
   transition: opacity 0.3s ease;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .header {
     padding: 20px 24px;
   }
-  
   .header-icons {
     gap: 12px;
   }
-  
   .icon-link {
     width: 36px;
     height: 36px;
   }
-  
   .icon-link svg {
     width: 16px;
     height: 16px;
   }
 }
 
-/* HERO */
-.hero {
-  max-width: 900px;
-  margin: 80px auto 40px;
-  text-align: center;
+/* ===================== */
+/* TIMELINE VERTICAL     */
+/* ===================== */
+
+.tl-v {
+  position: relative;
+  max-width: 520px;
+  margin: 60px auto 40px;
   padding: 0 20px;
 }
 
-.hero h1 {
-  font-size: 2rem;
-  margin-bottom: 16px;
+/* Central dashed path — like a treasure map route */
+.tl-v::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  border-left: 2.5px dashed #94a3b8;
+  transform: translateX(-50%);
+  z-index: 0;
 }
 
-.hero p {
-  color: #64748b;
-  transition: color 0.3s ease;
-}
-
-/* TIMELINE */
-.timeline {
+.tl-v-item {
   display: flex;
   align-items: center;
+  position: relative;
+  z-index: 1;
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+/* Three-column layout: left half, center column, right half */
+.tl-v-half {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.tl-v-center {
+  width: 44px;
+  flex-shrink: 0;
+  display: flex;
   justify-content: center;
-  gap: 0;
-  margin-bottom: 48px;
-  padding: 0 20px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-
-.tl-track {
-  display: flex;
-  align-items: center;
-  gap: 0;
-}
-
-.tl-node {
-  display: flex;
   align-items: center;
   position: relative;
 }
 
-.tl-line {
-  width: 40px;
-  height: 2px;
-  background: #d1d5db;
-  flex-shrink: 0;
-  transition: background 0.3s ease;
+/* Right side: label in left half, empty in right half */
+.tl-v-item[data-side="right"] .tl-v-half:first-child {
+  justify-content: flex-end;
+  padding-right: 0;
 }
 
-.tl-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px 4px;
-  font-family: inherit;
-  transition: opacity 0.3s ease;
-  opacity: 0.5;
+.tl-v-item[data-side="right"] .tl-v-half:last-child {
+  justify-content: flex-start;
 }
 
-.tl-btn.active {
-  opacity: 1;
+/* Left side: empty in left half, label in right half */
+.tl-v-item[data-side="left"] .tl-v-half:first-child {
+  justify-content: flex-end;
 }
 
-.tl-dot {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  background: #d1d5db;
-  border: 2px solid #d1d5db;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
+.tl-v-item[data-side="left"] .tl-v-half:last-child {
+  justify-content: flex-start;
+  padding-left: 0;
 }
 
-.tl-btn.active .tl-dot {
-  background: #0f172a;
-  border-color: #0f172a;
+/* Dashed arm connecting label text to center dot */
+.tl-v-arm {
+  flex: 1;
+  min-width: 12px;
+  height: 0;
+  border-bottom: 2px dashed #94a3b8;
+  transition: border-color 0.3s ease;
 }
 
-.tl-label {
-  font-size: 0.75rem;
+.tl-v-item[data-side="right"] .tl-v-arm {
+  margin-left: 10px;
+}
+
+.tl-v-item[data-side="left"] .tl-v-arm {
+  margin-right: 10px;
+  order: -1;
+}
+
+/* Date label */
+.tl-v-label {
+  font-size: 0.95rem;
+  font-weight: 500;
   color: #64748b;
   white-space: nowrap;
-  transition: color 0.3s ease;
+  padding: 8px 0;
+  transition: color 0.3s ease, font-weight 0.3s ease;
+  user-select: none;
 }
 
-.tl-btn.active .tl-label {
+.tl-v-item[data-side="right"] .tl-v-label {
+  text-align: right;
+}
+
+.tl-v-item[data-side="left"] .tl-v-label {
+  text-align: left;
+}
+
+/* The dot — marker on the treasure map path */
+.tl-v-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #94a3b8;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 4px transparent;
+}
+
+.tl-v-dot:hover {
+  border-color: #0f172a;
+  transform: scale(1.15);
+  box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.08);
+}
+
+/* Active (selected) item */
+.tl-v-item.active .tl-v-dot {
+  background: #0f172a;
+  border-color: #0f172a;
+  transform: scale(1.1);
+  box-shadow: 0 0 0 6px rgba(15, 23, 42, 0.15);
+}
+
+.tl-v-item.active .tl-v-label {
   color: #0f172a;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-/* First button (Tutte) outside the track */
-.timeline > .tl-btn {
-  margin-right: 12px;
-  padding: 10px 18px;
-  border-radius: 999px;
+.tl-v-label:hover {
+  color: #0f172a;
+}
+
+/* Connector SVG between items — creates the zigzag diagonal */
+.tl-v-connector {
+  display: block;
+  width: 100%;
+  height: 28px;
+  position: relative;
+  z-index: 0;
+}
+
+.tl-v-connector line {
+  stroke: #94a3b8;
+  stroke-dasharray: 5, 5;
+}
+
+/* ===================== */
+/* GALLERY SECTION       */
+/* ===================== */
+
+.gallery-section {
+  display: none;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 0 20px;
+  animation: fadeSlideIn 0.4s ease;
+}
+
+.gallery-section.visible {
+  display: block;
+}
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gallery-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding-top: 8px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.gallery-date {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.gallery-back {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.85rem;
+  color: #64748b;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.gallery-back:hover {
   background: #f1f5f9;
   color: #0f172a;
-  font-size: 0.875rem;
-  font-weight: 500;
-  opacity: 1;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.timeline > .tl-btn.active {
-  background: #0f172a;
-  color: #ffffff;
 }
 
 /* GALLERY - MASONRY LAYOUT */
 .gallery {
-  max-width: 1200px;
-  margin: 0 auto 40px;
-  padding: 0 20px;
   column-count: 3;
-  column-gap: 24px;
+  column-gap: 20px;
 }
 
 .photo-card {
   break-inside: avoid;
-  margin-bottom: 24px;
-  border-radius: 16px;
+  margin-bottom: 20px;
+  border-radius: 14px;
   overflow: hidden;
   display: block;
   cursor: grab;
@@ -301,19 +389,19 @@ button.icon-link {
 }
 
 .photo-card.dragging {
-  opacity: 0.4;
+  opacity: 0.35;
 }
 
 .photo-card.drag-over {
   box-shadow: 0 0 0 3px #0f172a;
-  border-radius: 16px;
+  border-radius: 14px;
 }
 
 .gallery img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 16px;
+  border-radius: 14px;
   transition: transform 0.3s ease;
 }
 
@@ -358,10 +446,9 @@ button.icon-link {
 }
 
 /* ==================== */
-/* DARK MODE STYLES     */
+/* DARK MODE            */
 /* ==================== */
 
-/* Dark mode base styles */
 [data-theme="dark"],
 :root:not([data-theme="light"]) {
   color-scheme: dark;
@@ -402,7 +489,6 @@ button.icon-link {
   color: #ffffff;
 }
 
-/* Email/Gmail hover stays red in dark mode */
 [data-theme="dark"] .icon-link[title="Email"]:hover,
 [data-theme="dark"] .icon-link[title="Invia email"]:hover,
 [data-theme="dark"] .icon-link[title*="email"]:hover,
@@ -417,7 +503,6 @@ button.icon-link {
   border-color: transparent !important;
 }
 
-/* Instagram hover stays gradient in dark mode */
 [data-theme="dark"] .icon-link[title="Instagram"]:hover,
 [data-theme="dark"] .icon-link[title*="Instagram"]:hover,
 :root:not([data-theme="light"]) .icon-link[title="Instagram"]:hover,
@@ -431,48 +516,78 @@ button.icon-link {
   stroke: #ffffff;
 }
 
-[data-theme="dark"] .hero p,
-:root:not([data-theme="light"]) .hero p {
+/* Timeline — dark mode */
+[data-theme="dark"] .tl-v::before,
+:root:not([data-theme="light"]) .tl-v::before {
+  border-left-color: #475569;
+}
+
+[data-theme="dark"] .tl-v-arm,
+:root:not([data-theme="light"]) .tl-v-arm {
+  border-bottom-color: #475569;
+}
+
+[data-theme="dark"] .tl-v-label,
+:root:not([data-theme="light"]) .tl-v-label {
   color: #94a3b8;
 }
 
-[data-theme="dark"] .tl-line,
-:root:not([data-theme="light"]) .tl-line {
-  background: #475569;
-}
-
-[data-theme="dark"] .tl-dot,
-:root:not([data-theme="light"]) .tl-dot {
-  background: #475569;
-  border-color: #475569;
-}
-
-[data-theme="dark"] .tl-btn.active .tl-dot,
-:root:not([data-theme="light"]) .tl-btn.active .tl-dot {
-  background: #f8fafc;
-  border-color: #f8fafc;
-}
-
-[data-theme="dark"] .tl-label,
-:root:not([data-theme="light"]) .tl-label {
-  color: #94a3b8;
-}
-
-[data-theme="dark"] .tl-btn.active .tl-label,
-:root:not([data-theme="light"]) .tl-btn.active .tl-label {
+[data-theme="dark"] .tl-v-label:hover,
+:root:not([data-theme="light"]) .tl-v-label:hover {
   color: #f8fafc;
 }
 
-[data-theme="dark"] .timeline > .tl-btn,
-:root:not([data-theme="light"]) .timeline > .tl-btn {
+[data-theme="dark"] .tl-v-dot,
+:root:not([data-theme="light"]) .tl-v-dot {
   background: #1e293b;
-  color: #cbd5e1;
+  border-color: #475569;
 }
 
-[data-theme="dark"] .timeline > .tl-btn.active,
-:root:not([data-theme="light"]) .timeline > .tl-btn.active {
+[data-theme="dark"] .tl-v-dot:hover,
+:root:not([data-theme="light"]) .tl-v-dot:hover {
+  border-color: #f8fafc;
+  box-shadow: 0 0 0 6px rgba(248, 250, 252, 0.1);
+}
+
+[data-theme="dark"] .tl-v-item.active .tl-v-dot,
+:root:not([data-theme="light"]) .tl-v-item.active .tl-v-dot {
   background: #f8fafc;
-  color: #0f172a;
+  border-color: #f8fafc;
+  box-shadow: 0 0 0 6px rgba(248, 250, 252, 0.2);
+}
+
+[data-theme="dark"] .tl-v-item.active .tl-v-label,
+:root:not([data-theme="light"]) .tl-v-item.active .tl-v-label {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .tl-v-connector line,
+:root:not([data-theme="light"]) .tl-v-connector line,
+[data-theme="dark"] .tl-v-connector path,
+:root:not([data-theme="light"]) .tl-v-connector path {
+  stroke: #475569;
+}
+
+/* Gallery — dark mode */
+[data-theme="dark"] .gallery-header,
+:root:not([data-theme="light"]) .gallery-header {
+  border-top-color: #334155;
+}
+
+[data-theme="dark"] .gallery-date,
+:root:not([data-theme="light"]) .gallery-date {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .gallery-back,
+:root:not([data-theme="light"]) .gallery-back {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .gallery-back:hover,
+:root:not([data-theme="light"]) .gallery-back:hover {
+  background: #1e293b;
+  color: #f8fafc;
 }
 
 [data-theme="dark"] .photo-card.drag-over,

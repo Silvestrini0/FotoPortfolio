@@ -182,24 +182,97 @@ button.icon-link {
   transition: color 0.3s ease;
 }
 
-/* FILTERS */
-.filters {
+/* TIMELINE */
+.timeline {
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 40px;
+  gap: 0;
+  margin-bottom: 48px;
+  padding: 0 20px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
-.filter {
+.tl-track {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.tl-node {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.tl-line {
+  width: 40px;
+  height: 2px;
+  background: #d1d5db;
+  flex-shrink: 0;
+  transition: background 0.3s ease;
+}
+
+.tl-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 4px;
+  font-family: inherit;
+  transition: opacity 0.3s ease;
+  opacity: 0.5;
+}
+
+.tl-btn.active {
+  opacity: 1;
+}
+
+.tl-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #d1d5db;
+  border: 2px solid #d1d5db;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.tl-btn.active .tl-dot {
+  background: #0f172a;
+  border-color: #0f172a;
+}
+
+.tl-label {
+  font-size: 0.75rem;
+  color: #64748b;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.tl-btn.active .tl-label {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+/* First button (Tutte) outside the track */
+.timeline > .tl-btn {
+  margin-right: 12px;
   padding: 10px 18px;
   border-radius: 999px;
-  border: none;
   background: #f1f5f9;
-  cursor: pointer;
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 1;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.filter.active {
+.timeline > .tl-btn.active {
   background: #0f172a;
   color: #ffffff;
 }
@@ -363,14 +436,41 @@ button.icon-link {
   color: #94a3b8;
 }
 
-[data-theme="dark"] .filter,
-:root:not([data-theme="light"]) .filter {
+[data-theme="dark"] .tl-line,
+:root:not([data-theme="light"]) .tl-line {
+  background: #475569;
+}
+
+[data-theme="dark"] .tl-dot,
+:root:not([data-theme="light"]) .tl-dot {
+  background: #475569;
+  border-color: #475569;
+}
+
+[data-theme="dark"] .tl-btn.active .tl-dot,
+:root:not([data-theme="light"]) .tl-btn.active .tl-dot {
+  background: #f8fafc;
+  border-color: #f8fafc;
+}
+
+[data-theme="dark"] .tl-label,
+:root:not([data-theme="light"]) .tl-label {
+  color: #94a3b8;
+}
+
+[data-theme="dark"] .tl-btn.active .tl-label,
+:root:not([data-theme="light"]) .tl-btn.active .tl-label {
+  color: #f8fafc;
+}
+
+[data-theme="dark"] .timeline > .tl-btn,
+:root:not([data-theme="light"]) .timeline > .tl-btn {
   background: #1e293b;
   color: #cbd5e1;
 }
 
-[data-theme="dark"] .filter.active,
-:root:not([data-theme="light"]) .filter.active {
+[data-theme="dark"] .timeline > .tl-btn.active,
+:root:not([data-theme="light"]) .timeline > .tl-btn.active {
   background: #f8fafc;
   color: #0f172a;
 }

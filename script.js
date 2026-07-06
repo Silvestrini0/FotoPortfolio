@@ -1,131 +1,90 @@
 document.addEventListener('DOMContentLoaded', function () {
-    
+
     // ======================
-    // 0. CARICA ORDINE SALVATO
+    // 0. ALBUM DATA & RENDER
     // ======================
-    
-    const gallery = document.querySelector('.gallery');
+
+    const timeline = document.getElementById('timeline');
+    const gallery = document.getElementById('gallery');
     const savedOrder = localStorage.getItem('photoOrder');
-    if (savedOrder) {
-        try {
-            const order = JSON.parse(savedOrder);
-            const cards = document.querySelectorAll('.photo-card');
-            const cardMap = {};
-            cards.forEach(c => {
-                const src = c.querySelector('img').getAttribute('src');
-                cardMap[src] = c;
-            });
-            // Reorder based on saved order
-            order.forEach(src => {
-                if (cardMap[src]) gallery.appendChild(cardMap[src]);
-            });
-            // Append any new cards not in saved order
-            cards.forEach(c => {
-                const src = c.querySelector('img').getAttribute('src');
-                if (!order.includes(src)) gallery.appendChild(c);
-            });
-        } catch (e) {}
+    let globalOrder = savedOrder ? JSON.parse(savedOrder) : null;
+
+    const months = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
+
+    function formatDate(dateStr) {
+        const [y, m, d] = dateStr.split('-');
+        return `${parseInt(d)} ${months[parseInt(m) - 1]} ${y}`;
     }
 
-    // ======================
-    // 1. FILTRO DELLE FOTO
-    // ======================
-    
-    const filterButtons = document.querySelectorAll('.filter');
+    function renderTimeline() {
+        let html = '<button class="tl-btn active" data-album="tutte">Tutte</button><div class="tl-track">';
+        albums.forEach((a, i) => {
+            html += '<div class="tl-node">';
+            if (i > 0) html += '<span class="tl-line"></span>';
+            html += `<button class="tl-btn" data-album="${a.date}">
+                <span class="tl-dot"></span>
+                <span class="tl-label">${formatDate(a.date)}</span>
+            </button></div>`;
+        });
+        html += '</div>';
+        timeline.innerHTML = html;
 
-    function applyFilter() {
-        const activeFilter = document.querySelector('.filter.active');
-        if (!activeFilter) return;
-        const filterValue = activeFilter.getAttribute('data-filter');
-        const photoCards = document.querySelectorAll('.photo-card');
-        photoCards.forEach(card => {
-            const category = card.getAttribute('data-category');
-            const filterValueLower = filterValue.toLowerCase();
-            const categoryLower = category.toLowerCase();
-            if (filterValueLower === 'tutte') {
-                card.style.display = 'block';
-            } else if (categoryLower === filterValueLower) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
+        timeline.querySelectorAll('.tl-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                timeline.querySelectorAll('.tl-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderGallery(btn.dataset.album);
+            });
         });
     }
 
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            applyFilter();
+    function renderGallery(albumFilter) {
+        gallery.innerHTML = '';
+        let items = [];
+        albums.forEach(album => {
+            album.photos.forEach(p => {
+                const src = 'img/' + album.date + '/' + p;
+                if (albumFilter === 'tutte' || albumFilter === album.date) {
+                    items.push({ src, date: album.date });
+                }
+            });
         });
-    });
 
-    // ======================
-    // 2. AGGIORNA ANNO FOOTER
-    // ======================
-    
-    const yearElement = document.getElementById('current-year');
-    if (yearElement) {
-        yearElement.textContent = new Date().getFullYear();
-    }
-
-    // ======================
-    // 3. THEME TOGGLE (Light/Dark Mode)
-    // ======================
-    
-    const themeToggle = document.querySelector('.theme-toggle');
-    const htmlElement = document.documentElement;
-    
-    // Check for saved theme preference or use system preference
-    const savedTheme = localStorage.getItem('theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    if (savedTheme) {
-        // Use saved theme preference
-        htmlElement.setAttribute('data-theme', savedTheme);
-    } else if (systemPrefersDark) {
-        // Use system preference
-        htmlElement.setAttribute('data-theme', 'dark');
-    }
-    
-    // Theme toggle click handler
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = htmlElement.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            
-            // Update theme
-            htmlElement.setAttribute('data-theme', newTheme);
-            
-            // Save preference to localStorage
-            localStorage.setItem('theme', newTheme);
-            
-            // Optional: Add animation feedback
-            themeToggle.style.transform = 'scale(0.9)';
-            setTimeout(() => {
-                themeToggle.style.transform = 'scale(1)';
-            }, 150);
-        });
-    }
-    
-    // Listen for system theme changes
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        // Only update if user hasn't set a manual preference
-        if (!localStorage.getItem('theme')) {
-            const newTheme = e.matches ? 'dark' : 'light';
-            htmlElement.setAttribute('data-theme', newTheme);
+        if (albumFilter === 'tutte' && globalOrder) {
+            items.sort((a, b) => {
+                const ai = globalOrder.indexOf(a.src);
+                const bi = globalOrder.indexOf(b.src);
+                if (ai === -1 && bi === -1) return 0;
+                if (ai === -1) return 1;
+                if (bi === -1) return -1;
+                return ai - bi;
+            });
         }
-    });
+
+        items.forEach(item => {
+            const card = document.createElement('article');
+            card.className = 'photo-card';
+            card.draggable = true;
+            card.dataset.date = item.date;
+            const img = document.createElement('img');
+            img.src = item.src;
+            img.alt = '';
+            img.loading = 'lazy';
+            card.appendChild(img);
+            gallery.appendChild(card);
+        });
+
+        initDragDrop();
+    }
 
     // ======================
-    // 4. DRAG & DROP
+    // 1. DRAG & DROP
     // ======================
-    
+
     let draggedCard = null;
 
     function initDragDrop() {
-        const cards = document.querySelectorAll('.photo-card');
-        cards.forEach(card => {
+        document.querySelectorAll('.photo-card').forEach(card => {
             card.addEventListener('dragstart', handleDragStart);
             card.addEventListener('dragover', handleDragOver);
             card.addEventListener('dragenter', handleDragEnter);
@@ -149,9 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function handleDragEnter(e) {
         e.preventDefault();
-        if (this !== draggedCard) {
-            this.classList.add('drag-over');
-        }
+        if (this !== draggedCard) this.classList.add('drag-over');
     }
 
     function handleDragLeave() {
@@ -163,16 +120,13 @@ document.addEventListener('DOMContentLoaded', function () {
         this.classList.remove('drag-over');
         if (draggedCard && this !== draggedCard) {
             const parent = this.parentNode;
-            const allCards = [...parent.querySelectorAll('.photo-card')];
-            const dropIndex = allCards.indexOf(this);
-            const dragIndex = allCards.indexOf(draggedCard);
-            if (dropIndex < dragIndex) {
+            const all = [...parent.querySelectorAll('.photo-card')];
+            if (all.indexOf(this) < all.indexOf(draggedCard)) {
                 parent.insertBefore(draggedCard, this);
             } else {
                 parent.insertBefore(draggedCard, this.nextSibling);
             }
             saveOrder();
-            applyFilter();
         }
     }
 
@@ -185,13 +139,58 @@ document.addEventListener('DOMContentLoaded', function () {
     function saveOrder() {
         const cards = document.querySelectorAll('.photo-card');
         const order = [];
-        cards.forEach(c => {
-            const src = c.querySelector('img').getAttribute('src');
-            order.push(src);
-        });
+        cards.forEach(c => order.push(c.querySelector('img').getAttribute('src')));
         localStorage.setItem('photoOrder', JSON.stringify(order));
+        globalOrder = order;
     }
 
-    initDragDrop();
+    // ======================
+    // 2. AGGIORNA ANNO FOOTER
+    // ======================
+
+    const yearElement = document.getElementById('current-year');
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
+    }
+
+    // ======================
+    // 3. THEME TOGGLE
+    // ======================
+
+    const themeToggle = document.querySelector('.theme-toggle');
+    const htmlElement = document.documentElement;
+
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme) {
+        htmlElement.setAttribute('data-theme', savedTheme);
+    } else if (systemPrefersDark) {
+        htmlElement.setAttribute('data-theme', 'dark');
+    }
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = htmlElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            htmlElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.style.transform = 'scale(0.9)';
+            setTimeout(() => { themeToggle.style.transform = 'scale(1)'; }, 150);
+        });
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+            htmlElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+        }
+    });
+
+    // ======================
+    // INIT
+    // ======================
+
+    renderTimeline();
+    renderGallery('tutte');
 
 });

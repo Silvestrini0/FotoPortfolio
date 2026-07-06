@@ -15,161 +15,133 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ======================
-  // 1. TIMELINE RENDER
+  // 1. RENDER TIMELINE
   // ======================
 
-  const timeline = document.getElementById('timeline');
-  const gallerySection = document.getElementById('gallerySection');
-  const gallery = document.getElementById('gallery');
-  const galleryDate = document.getElementById('galleryDate');
-  const galleryBack = document.getElementById('galleryBack');
-  const savedOrder = JSON.parse(localStorage.getItem('photoOrder') || '[]');
+  const container = document.querySelector('.timeline__container');
 
   function renderTimeline() {
     let html = '';
-
-    albums.forEach((album, i) => {
-      const side = i % 2 === 0 ? 'right' : 'left';
-      const x1 = side === 'right' ? '70' : '30';
-      const x2 = side === 'right' ? '30' : '70';
-
-      html += `<div class="tl-v-item" data-side="${side}" data-date="${album.date}">`;
-      html += `<div class="tl-v-half">`;
-      if (side === 'right') {
-        html += `<span class="tl-v-label">${formatDate(album.date)}</span>`;
-        html += `<span class="tl-v-arm"></span>`;
+    albums.forEach(album => {
+      html += `<div class="timeline__block">`;
+      html += `<div class="timeline__content">`;
+      html += `<span class="timeline__date">${formatDate(album.date)}</span>`;
+      html += `<div class="carousel" data-date="${album.date}">`;
+      html += `<div class="carousel__viewport">`;
+      html += `<div class="carousel__slides">`;
+      album.photos.forEach(p => {
+        html += `<img src="img/${album.date}/${p}" alt="" loading="lazy">`;
+      });
+      html += `</div></div>`;
+      if (album.photos.length > 1) {
+        html += `<button class="carousel__btn carousel__prev">‹</button>`;
+        html += `<button class="carousel__btn carousel__next">›</button>`;
+        html += `<div class="carousel__dots"></div>`;
       }
+      html += `</div></div>`;
+      html += `<div class="timeline__marker"></div>`;
       html += `</div>`;
-      html += `<div class="tl-v-center"><span class="tl-v-dot"></span></div>`;
-      html += `<div class="tl-v-half">`;
-      if (side === 'left') {
-        html += `<span class="tl-v-arm"></span>`;
-        html += `<span class="tl-v-label">${formatDate(album.date)}</span>`;
-      }
-      html += `</div>`;
-      html += `</div>`;
-
-      if (i < albums.length - 1) {
-        html += `<svg class="tl-v-connector" viewBox="0 0 100 28" preserveAspectRatio="none">
-          <line x1="${x1}" y1="0" x2="${x2}" y2="28" stroke-width="2" fill="none" vector-effect="non-scaling-stroke"/>
-        </svg>`;
-      }
     });
+    container.innerHTML = html;
+    initCarousels();
+    initScrollAnimations();
+  }
 
-    timeline.innerHTML = html;
+  // ======================
+  // 2. CAROUSEL
+  // ======================
 
-    timeline.querySelectorAll('.tl-v-item').forEach(item => {
-      item.addEventListener('click', () => {
-        const date = item.dataset.date;
-        if (item.classList.contains('active')) {
-          hideGallery();
-        } else {
-          timeline.querySelectorAll('.tl-v-item').forEach(i => i.classList.remove('active'));
-          item.classList.add('active');
-          showGallery(date);
+  function initCarousels() {
+    document.querySelectorAll('.carousel').forEach(carousel => {
+      const slides = carousel.querySelector('.carousel__slides');
+      const imgs = slides.querySelectorAll('img');
+      if (imgs.length <= 1) return;
+
+      const prev = carousel.querySelector('.carousel__prev');
+      const next = carousel.querySelector('.carousel__next');
+      const dotsContainer = carousel.querySelector('.carousel__dots');
+      let current = 0;
+      let autoTimer;
+
+      imgs.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'carousel__dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => goTo(i));
+        dotsContainer.appendChild(dot);
+      });
+
+      function goTo(index) {
+        current = index;
+        slides.style.transform = `translateX(-${current * 100}%)`;
+        dotsContainer.querySelectorAll('.carousel__dot').forEach((d, i) => {
+          d.classList.toggle('active', i === current);
+        });
+      }
+
+      prev.addEventListener('click', () => {
+        goTo(current > 0 ? current - 1 : imgs.length - 1);
+        resetAuto();
+      });
+
+      next.addEventListener('click', () => {
+        goTo(current < imgs.length - 1 ? current + 1 : 0);
+        resetAuto();
+      });
+
+      dotsContainer.addEventListener('click', e => {
+        if (e.target.classList.contains('carousel__dot')) resetAuto();
+      });
+
+      function startAuto() {
+        stopAuto();
+        autoTimer = setInterval(() => {
+          goTo(current < imgs.length - 1 ? current + 1 : 0);
+        }, 4000);
+      }
+
+      function stopAuto() {
+        clearInterval(autoTimer);
+      }
+
+      function resetAuto() {
+        stopAuto();
+        startAuto();
+      }
+
+      carousel.addEventListener('mouseenter', stopAuto);
+      carousel.addEventListener('mouseleave', startAuto);
+
+      startAuto();
+    });
+  }
+
+  // ======================
+  // 3. SCROLL ANIMATIONS
+  // ======================
+
+  function initScrollAnimations() {
+    const items = container.querySelectorAll('.timeline__content, .timeline__marker');
+
+    function checkVisibility() {
+      items.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
+          el.classList.add('visible');
         }
       });
-    });
-  }
+    }
 
-  // ======================
-  // 2. GALLERY
-  // ======================
+    checkVisibility();
 
-  function showGallery(date) {
-    const album = albums.find(a => a.date === date);
-    if (!album) return;
-
-    const items = [...album.photos];
-
-    items.sort((a, b) => {
-      const srcA = `img/${date}/${a}`;
-      const srcB = `img/${date}/${b}`;
-      const iA = savedOrder.indexOf(srcA);
-      const iB = savedOrder.indexOf(srcB);
-      if (iA === -1 && iB === -1) return 0;
-      if (iA === -1) return 1;
-      if (iB === -1) return -1;
-      return iA - iB;
-    });
-
-    gallery.innerHTML = '';
-    galleryDate.textContent = formatDate(date);
-
-    items.forEach(p => {
-      const card = document.createElement('article');
-      card.className = 'photo-card';
-      card.draggable = true;
-      const img = document.createElement('img');
-      img.src = `img/${date}/${p}`;
-      img.alt = '';
-      img.loading = 'lazy';
-      card.appendChild(img);
-      gallery.appendChild(card);
-    });
-
-    gallerySection.classList.add('visible');
-    gallerySection.scrollIntoView({ behavior: 'smooth' });
-    initDragDrop();
-  }
-
-  function hideGallery() {
-    gallerySection.classList.remove('visible');
-    timeline.querySelectorAll('.tl-v-item').forEach(i => i.classList.remove('active'));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  galleryBack.addEventListener('click', hideGallery);
-
-  // ======================
-  // 3. DRAG & DROP
-  // ======================
-
-  let draggedCard = null;
-
-  function initDragDrop() {
-    document.querySelectorAll('.photo-card').forEach(card => {
-      card.addEventListener('dragstart', e => {
-        draggedCard = card;
-        card.classList.add('dragging');
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/plain', '');
-      });
-      card.addEventListener('dragover', e => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-      });
-      card.addEventListener('dragenter', e => {
-        e.preventDefault();
-        if (card !== draggedCard) card.classList.add('drag-over');
-      });
-      card.addEventListener('dragleave', () => {
-        card.classList.remove('drag-over');
-      });
-      card.addEventListener('drop', e => {
-        e.preventDefault();
-        card.classList.remove('drag-over');
-        if (draggedCard && card !== draggedCard) {
-          const parent = card.parentNode;
-          const all = [...parent.querySelectorAll('.photo-card')];
-          if (all.indexOf(card) < all.indexOf(draggedCard)) {
-            parent.insertBefore(draggedCard, card);
-          } else {
-            parent.insertBefore(draggedCard, card.nextSibling);
-          }
-          const cards = parent.querySelectorAll('.photo-card');
-          const order = [];
-          cards.forEach(c => order.push(c.querySelector('img').getAttribute('src')));
-          localStorage.setItem('photoOrder', JSON.stringify(order));
-          savedOrder.length = 0;
-          savedOrder.push(...order);
-        }
-      });
-      card.addEventListener('dragend', () => {
-        card.classList.remove('dragging');
-        document.querySelectorAll('.photo-card').forEach(c => c.classList.remove('drag-over'));
-        draggedCard = null;
-      });
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          checkVisibility();
+          ticking = false;
+        });
+        ticking = true;
+      }
     });
   }
 

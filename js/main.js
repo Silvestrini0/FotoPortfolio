@@ -1,53 +1,40 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('categories');
-  if (!container) return;
+  if (!container || !window.portfolioData) return;
 
-  const loading = document.createElement('p');
-  loading.className = 'loading-text';
-  loading.textContent = 'Caricamento...';
-  container.appendChild(loading);
-
-  try {
-    const folders = await getPortfolioData();
-
-    if (!folders || !folders.length) {
-      loading.textContent = 'Nessuna cartella trovata in img/.';
-      return;
-    }
-
-    loading.remove();
-    const grid = document.createElement('div');
-    grid.className = 'category-grid';
-
-    folders.forEach(folder => {
-      const card = document.createElement('a');
-      card.className = 'category-card';
-      card.href = `gallery.html?folder=${encodeURIComponent(folder.id)}`;
-
-      const img = document.createElement('img');
-      img.src = folder.cover;
-      img.alt = folder.name;
-      img.loading = 'lazy';
-
-      const overlay = document.createElement('div');
-      overlay.className = 'overlay';
-
-      const title = document.createElement('h2');
-      title.textContent = folder.name;
-
-      const count = document.createElement('p');
-      count.textContent = `${folder.images.length} fotografie`;
-
-      overlay.appendChild(title);
-      overlay.appendChild(count);
-      card.appendChild(img);
-      card.appendChild(overlay);
-      grid.appendChild(card);
-    });
-
-    container.appendChild(grid);
-  } catch (err) {
-    loading.textContent = 'Errore nel caricamento. Riprova pi\u00f9 tardi.';
-    console.error(err);
+  if (!window.portfolioData.length) {
+    container.innerHTML = '<p class="loading-text">Nessuna cartella trovata in img/. Crea una cartella con delle foto e fai push.</p>';
+    return;
   }
+
+  const grid = document.createElement('div');
+  grid.className = 'category-grid';
+
+  window.portfolioData.forEach(folder => {
+    const card = document.createElement('a');
+    card.className = 'category-card';
+    card.href = `gallery.html?folder=${encodeURIComponent(folder.id)}`;
+
+    const img = document.createElement('img');
+    img.src = folder.cover;
+    img.alt = folder.name;
+    img.loading = 'lazy';
+
+    const overlay = document.createElement('div');
+    overlay.className = 'overlay';
+
+    const title = document.createElement('h2');
+    title.textContent = folder.name;
+
+    const count = document.createElement('p');
+    count.textContent = `${folder.images.length} fotografie`;
+
+    overlay.appendChild(title);
+    overlay.appendChild(count);
+    card.appendChild(img);
+    card.appendChild(overlay);
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
 });

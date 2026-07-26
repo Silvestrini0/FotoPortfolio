@@ -196,6 +196,18 @@ nav {
   padding: 60px 20px;
 }
 
+/* Portrait grid (gallery) */
+.portrait-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.portrait-grid .feed-image {
+  margin-bottom: 0;
+}
+
 /* Back link */
 .back-link {
   position: fixed;
@@ -472,6 +484,10 @@ footer p {
 
   .category-card .overlay h2 {
     font-size: 22px;
+  }
+
+  .portrait-grid {
+    grid-template-columns: 1fr;
   }
 
   .feed {

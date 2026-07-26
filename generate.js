@@ -65,12 +65,29 @@ async function generate() {
 
     if (!files.length) continue;
 
-    const images = files.map(f => `img/${folder.name}/${f}`);
-    for (const f of files) {
+    const colorFiles = files.filter(f => !isBWFile(f));
+    const images = colorFiles.map(f => `img/${folder.name}/${f}`);
+    const bwImages = colorFiles.map(f => {
+      const ext = path.extname(f);
+      const base = path.basename(f, ext);
+      const bwFile = base + '-BW' + ext;
+      return files.includes(bwFile) ? `img/${folder.name}/${bwFile}` : null;
+    });
+
+    for (const f of colorFiles) {
       await ensureThumb(
         path.join(imgDir, folder.name, f),
         path.join(thumbDir, folder.name, f)
       );
+      const ext = path.extname(f);
+      const base = path.basename(f, ext);
+      const bwFile = base + '-BW' + ext;
+      if (files.includes(bwFile)) {
+        await ensureThumb(
+          path.join(imgDir, folder.name, bwFile),
+          path.join(thumbDir, folder.name, bwFile)
+        );
+      }
     }
 
     data.push({
@@ -78,6 +95,7 @@ async function generate() {
       name: formatName(folder.name),
       images,
       thumbs: images.map(f => thumbUrl(f)),
+      bwImages,
       cover: images[0],
       coverThumb: thumbUrl(images[0])
     });

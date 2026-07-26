@@ -44,23 +44,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   feed.innerHTML = '';
 
-  // Raggruppa: due portrait fianco a fianco, uno da solo o landscape a tutta larghezza
+  const hasBw = folder.bwImages && folder.bwImages.length === folder.images.length;
+
   for (let i = 0; i < imageInfos.length; i++) {
     const cur = imageInfos[i];
     const nxt = imageInfos[i + 1];
+    const bwSrc = hasBw ? folder.bwImages[i] : null;
 
     if (cur.isPortrait && nxt && nxt.isPortrait) {
       const row = document.createElement('div');
       row.className = 'feed-row duo';
+      const nxtBw = hasBw ? folder.bwImages[i + 1] : null;
 
-      [cur, nxt].forEach(info => {
+      [cur, nxt].forEach((info, j) => {
         const img = document.createElement('img');
         img.className = 'feed-image portrait';
         img.src = info.thumb;
         img.alt = info.alt;
         img.loading = 'lazy';
         img.onerror = function () { this.src = info.full; };
-        img.addEventListener('click', () => window.openLightbox(info.thumb, info.full, null));
+        const b = j === 0 ? bwSrc : nxtBw;
+        img.addEventListener('click', () => window.openLightbox(info.thumb, info.full, b));
         row.appendChild(img);
       });
 
@@ -73,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       img.alt = cur.alt;
       img.loading = 'lazy';
       img.onerror = function () { this.src = cur.full; };
-      img.addEventListener('click', () => window.openLightbox(cur.thumb, cur.full, null));
+      img.addEventListener('click', () => window.openLightbox(cur.thumb, cur.full, bwSrc));
       feed.appendChild(img);
     }
   }

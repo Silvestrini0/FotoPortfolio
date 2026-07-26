@@ -440,7 +440,7 @@ footer p {
   opacity: 1;
 }
 
-/* Viewport — clip per carosello e zoom */
+/* Viewport */
 .lightbox-viewport {
   position: absolute;
   inset: 0;
@@ -449,20 +449,16 @@ footer p {
 }
 
 .lightbox-viewport.zoomed {
-  overflow: auto;
+  overflow: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .lightbox-viewport.zoomed::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  display: none;
 }
 
-.lightbox-viewport.zoomed::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.2);
-  border-radius: 3px;
-}
-
-/* Carosello BW */
+/* Carosello BW con effetto spring */
 .lightbox-image-wrapper {
   position: relative;
   width: 100%;
@@ -477,30 +473,40 @@ footer p {
   max-width: 100%;
   max-height: 95%;
   object-fit: contain;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease, filter 0.5s ease;
   cursor: pointer;
+  will-change: transform, opacity;
 }
 
 .lightbox-image-wrapper img.lb-color {
-  transform: translateX(0);
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  filter: blur(0);
 }
 
 .lightbox-image-wrapper img.lb-bw {
-  transform: translateX(100%);
+  transform: translateX(100%) scale(0.9);
+  opacity: 0;
+  filter: blur(2px);
 }
 
 .lightbox-image-wrapper.show-bw img.lb-color {
-  transform: translateX(-100%);
+  transform: translateX(-100%) scale(0.9);
+  opacity: 0;
+  filter: blur(2px);
 }
 
 .lightbox-image-wrapper.show-bw img.lb-bw {
-  transform: translateX(0);
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  filter: blur(0);
 }
 
-.lightbox-image-wrapper img.zoomed {
+.lightbox-image-wrapper.zoomed img {
   max-width: none;
   max-height: none;
   cursor: grab;
+  transition: none;
 }
 
 /* Toolbar inferiore */

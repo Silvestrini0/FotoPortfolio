@@ -44,14 +44,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   feed.innerHTML = '';
 
-  imageInfos.forEach((info, i) => {
-    const img = document.createElement('img');
-    img.className = 'feed-image' + (info.isPortrait ? ' portrait' : ' landscape');
-    img.src = info.thumb;
-    img.alt = info.alt;
-    img.loading = 'lazy';
-    img.onerror = function () { this.src = info.full; };
-    img.addEventListener('click', () => openLightbox(info.thumb, info.full, null));
-    feed.appendChild(img);
-  });
+  // Raggruppa: due portrait fianco a fianco, uno da solo o landscape a tutta larghezza
+  for (let i = 0; i < imageInfos.length; i++) {
+    const cur = imageInfos[i];
+    const nxt = imageInfos[i + 1];
+
+    if (cur.isPortrait && nxt && nxt.isPortrait) {
+      const row = document.createElement('div');
+      row.className = 'feed-row duo';
+
+      [cur, nxt].forEach(info => {
+        const img = document.createElement('img');
+        img.className = 'feed-image portrait';
+        img.src = info.thumb;
+        img.alt = info.alt;
+        img.loading = 'lazy';
+        img.onerror = function () { this.src = info.full; };
+        img.addEventListener('click', () => window.openLightbox(info.thumb, info.full, null));
+        row.appendChild(img);
+      });
+
+      feed.appendChild(row);
+      i++;
+    } else {
+      const img = document.createElement('img');
+      img.className = 'feed-image';
+      img.src = cur.thumb;
+      img.alt = cur.alt;
+      img.loading = 'lazy';
+      img.onerror = function () { this.src = cur.full; };
+      img.addEventListener('click', () => window.openLightbox(cur.thumb, cur.full, null));
+      feed.appendChild(img);
+    }
+  }
 });

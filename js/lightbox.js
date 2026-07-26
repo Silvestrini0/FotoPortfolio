@@ -128,3 +128,6 @@ function closeLightbox() {
   lightboxEl.classList.remove('active');
   document.body.style.overflow = '';
 }
+
+window.openLightbox = openLightbox;
+window.closeLightbox = closeLightbox;

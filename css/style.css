@@ -170,11 +170,8 @@ nav {
   margin-top: 8px;
 }
 
-/* Feed — griglia mista verticali/orizzontali */
+/* Feed — colonna singola + coppie portrait */
 .feed {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
   padding: 100vh 40px 120px;
   position: relative;
   z-index: 2;
@@ -186,6 +183,7 @@ nav {
   width: 100%;
   height: auto;
   display: block;
+  margin-bottom: 8px;
   cursor: pointer;
   transition: opacity 0.3s ease;
 }
@@ -194,8 +192,16 @@ nav {
   opacity: 0.7;
 }
 
-.feed-image.landscape {
-  grid-column: 1 / -1;
+.feed-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.feed-row.duo .feed-image {
+  flex: 1;
+  min-width: 0;
+  margin-bottom: 0;
 }
 
 /* Loading text */
@@ -621,13 +627,12 @@ footer p {
   }
 
   .feed {
-    grid-template-columns: 1fr;
     padding-left: 12px;
     padding-right: 12px;
   }
 
-  .feed-image.landscape {
-    grid-column: 1;
+  .feed-row.duo {
+    flex-direction: column;
   }
 
   .about-page {

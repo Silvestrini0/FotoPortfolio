@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.appendChild(img);
       }
 
-      card.addEventListener('click', () => openLightbox(single.thumb || single.src, single.src, single.bwSrc));
+      card.addEventListener('click', () => window.openLightbox(single.thumb || single.src, single.src, single.bwSrc));
       grid.appendChild(card);
     }
   }

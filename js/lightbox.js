@@ -57,17 +57,18 @@ function buildLightbox() {
       <button class="lightbox-arrow" id="lb-next" style="display:none">›</button>
     </div>
   `;
+  document.body.appendChild(lightboxEl);
 
   lightboxEl.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
   lightboxEl.addEventListener('click', e => { if (e.target === lightboxEl) closeLightbox(); });
 
-  document.getElementById('lb-zoom').addEventListener('click', toggleZoom);
-  document.getElementById('lb-hd').addEventListener('click', loadHD);
-  document.getElementById('lb-prev').addEventListener('click', () => slideBW(-1));
-  document.getElementById('lb-next').addEventListener('click', () => slideBW(1));
+  lightboxEl.querySelector('#lb-zoom').addEventListener('click', toggleZoom);
+  lightboxEl.querySelector('#lb-hd').addEventListener('click', loadHD);
+  lightboxEl.querySelector('#lb-prev').addEventListener('click', () => slideBW(-1));
+  lightboxEl.querySelector('#lb-next').addEventListener('click', () => slideBW(1));
 
-  document.getElementById('lb-img').addEventListener('click', toggleZoom);
-  document.getElementById('lb-bw').addEventListener('click', toggleZoom);
+  lightboxEl.querySelector('#lb-img').addEventListener('click', toggleZoom);
+  lightboxEl.querySelector('#lb-bw').addEventListener('click', toggleZoom);
 
   document.addEventListener('keydown', e => {
     if (!lightboxEl || !lightboxEl.classList.contains('active')) return;
@@ -76,8 +77,6 @@ function buildLightbox() {
     if (e.key === 'ArrowRight' && lbState.hasBW) slideBW(1);
     if (e.key === 'h' || e.key === 'H') loadHD();
   });
-
-  document.body.appendChild(lightboxEl);
 }
 
 function loadHD() {

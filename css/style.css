@@ -471,7 +471,7 @@ footer p {
 .lightbox-image-wrapper img {
   position: absolute;
   max-width: 100%;
-  max-height: 95%;
+  max-height: 100%;
   object-fit: contain;
   transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease, filter 0.5s ease;
   cursor: pointer;
@@ -540,27 +540,6 @@ footer p {
 .lightbox-arrow:hover {
   background: rgba(255,255,255,0.18);
   border-color: rgba(255,255,255,0.4);
-}
-
-.lightbox-zoom-badge {
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  opacity: 0.5;
-  cursor: pointer;
-  padding: 8px 14px;
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  font-family: inherit;
-  background: transparent;
-  color: #fff;
-  white-space: nowrap;
-}
-
-.lightbox-zoom-badge:hover {
-  opacity: 1;
-  border-color: rgba(255,255,255,0.5);
 }
 
 /* Grab / grabbing per pan */

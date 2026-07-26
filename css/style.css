@@ -170,8 +170,11 @@ nav {
   margin-top: 8px;
 }
 
-/* Feed - colonna singola */
+/* Feed — griglia mista verticali/orizzontali */
 .feed {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
   padding: 100vh 40px 120px;
   position: relative;
   z-index: 2;
@@ -183,7 +186,16 @@ nav {
   width: 100%;
   height: auto;
   display: block;
-  margin-bottom: 8px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.feed-image:hover {
+  opacity: 0.7;
+}
+
+.feed-image.landscape {
+  grid-column: 1 / -1;
 }
 
 /* Loading text */
@@ -194,18 +206,6 @@ nav {
   text-transform: uppercase;
   opacity: 0.5;
   padding: 60px 20px;
-}
-
-/* Portrait grid (gallery) */
-.portrait-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.portrait-grid .feed-image {
-  margin-bottom: 0;
 }
 
 /* Back link */
@@ -405,9 +405,6 @@ footer p {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.95);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   z-index: 1000;
   opacity: 0;
   visibility: hidden;
@@ -418,13 +415,6 @@ footer p {
 .lightbox.active {
   opacity: 1;
   visibility: visible;
-}
-
-.lightbox img {
-  max-width: 95%;
-  max-height: 95%;
-  object-fit: contain;
-  cursor: default;
 }
 
 .lightbox-close {
@@ -442,6 +432,150 @@ footer p {
 
 .lightbox-close:hover {
   opacity: 1;
+}
+
+/* Viewport — clip per carosello e zoom */
+.lightbox-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.lightbox-viewport.zoomed {
+  overflow: auto;
+}
+
+.lightbox-viewport.zoomed::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.lightbox-viewport.zoomed::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 3px;
+}
+
+/* Carosello BW */
+.lightbox-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lightbox-image-wrapper img {
+  position: absolute;
+  max-width: 100%;
+  max-height: 95%;
+  object-fit: contain;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.lightbox-image-wrapper img.lb-color {
+  transform: translateX(0);
+}
+
+.lightbox-image-wrapper img.lb-bw {
+  transform: translateX(100%);
+}
+
+.lightbox-image-wrapper.show-bw img.lb-color {
+  transform: translateX(-100%);
+}
+
+.lightbox-image-wrapper.show-bw img.lb-bw {
+  transform: translateX(0);
+}
+
+.lightbox-image-wrapper img.zoomed {
+  max-width: none;
+  max-height: none;
+  cursor: grab;
+}
+
+/* Toolbar inferiore */
+.lightbox-toolbar {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 1001;
+}
+
+.lightbox-arrow {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 22px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.lightbox-arrow:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.4);
+}
+
+.lightbox-zoom-badge {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.5;
+  cursor: pointer;
+  padding: 8px 14px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: transparent;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.lightbox-zoom-badge:hover {
+  opacity: 1;
+  border-color: rgba(255,255,255,0.5);
+}
+
+.lightbox-hd-btn {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 8px 14px;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+  white-space: nowrap;
+}
+
+.lightbox-hd-btn:hover {
+  background: rgba(255,255,255,0.25);
+  border-color: rgba(255,255,255,0.6);
+}
+
+.lightbox-hd-btn.hd-active {
+  background: rgba(46, 204, 64, 0.2);
+  border-color: rgba(46, 204, 64, 0.5);
+  color: #2ecc40;
+  cursor: default;
 }
 
 /* Responsive */
@@ -486,13 +620,14 @@ footer p {
     font-size: 22px;
   }
 
-  .portrait-grid {
-    grid-template-columns: 1fr;
-  }
-
   .feed {
+    grid-template-columns: 1fr;
     padding-left: 12px;
     padding-right: 12px;
+  }
+
+  .feed-image.landscape {
+    grid-column: 1;
   }
 
   .about-page {

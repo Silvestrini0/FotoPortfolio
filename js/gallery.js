@@ -21,42 +21,37 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   feed.innerHTML = '<p class="loading-text">Caricamento...</p>';
 
+  const hasThumbs = folder.thumbs && folder.thumbs.length === folder.images.length;
+
   const imageInfos = await Promise.all(folder.images.map((src, i) => {
     return new Promise(resolve => {
       const img = new Image();
-      img.onload = () => resolve({ src, alt: `${folder.name} - ${i + 1}`, isPortrait: img.naturalHeight > img.naturalWidth });
-      img.onerror = () => resolve({ src, alt: `${folder.name} - ${i + 1}`, isPortrait: false });
+      img.onload = () => resolve({
+        full: src,
+        thumb: hasThumbs ? folder.thumbs[i] : src,
+        alt: `${folder.name} - ${i + 1}`,
+        isPortrait: img.naturalHeight > img.naturalWidth
+      });
+      img.onerror = () => resolve({
+        full: src,
+        thumb: hasThumbs ? folder.thumbs[i] : src,
+        alt: `${folder.name} - ${i + 1}`,
+        isPortrait: false
+      });
       img.src = src;
     });
   }));
 
   feed.innerHTML = '';
 
-  const portraits = imageInfos.filter(info => info.isPortrait);
-  const landscapes = imageInfos.filter(info => !info.isPortrait);
-
-  if (portraits.length) {
-    const grid = document.createElement('div');
-    grid.className = 'portrait-grid';
-
-    portraits.forEach(info => {
-      const img = document.createElement('img');
-      img.className = 'feed-image';
-      img.src = info.src;
-      img.alt = info.alt;
-      img.loading = 'lazy';
-      grid.appendChild(img);
-    });
-
-    feed.appendChild(grid);
-  }
-
-  landscapes.forEach(info => {
+  imageInfos.forEach((info, i) => {
     const img = document.createElement('img');
-    img.className = 'feed-image';
-    img.src = info.src;
+    img.className = 'feed-image' + (info.isPortrait ? ' portrait' : ' landscape');
+    img.src = info.thumb;
     img.alt = info.alt;
     img.loading = 'lazy';
+    img.onerror = function () { this.src = info.full; };
+    img.addEventListener('click', () => openLightbox(info.thumb, info.full, null));
     feed.appendChild(img);
   });
 });

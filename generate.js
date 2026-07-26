@@ -66,15 +66,18 @@ async function generate() {
     if (!files.length) continue;
 
     const images = files.map(f => `img/${folder.name}/${f}`);
-    await ensureThumb(
-      path.join(imgDir, folder.name, files[0]),
-      path.join(thumbDir, folder.name, files[0])
-    );
+    for (const f of files) {
+      await ensureThumb(
+        path.join(imgDir, folder.name, f),
+        path.join(thumbDir, folder.name, f)
+      );
+    }
 
     data.push({
       id: folder.name,
       name: formatName(folder.name),
       images,
+      thumbs: images.map(f => thumbUrl(f)),
       cover: images[0],
       coverThumb: thumbUrl(images[0])
     });

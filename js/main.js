@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         card.appendChild(img);
       }
 
-      card.addEventListener('click', () => openLightbox(single.src));
+      card.addEventListener('click', () => openLightbox(single.thumb || single.src, single.src, single.bwSrc));
       grid.appendChild(card);
     }
   }
@@ -104,45 +104,3 @@ document.addEventListener('DOMContentLoaded', () => {
   container.appendChild(grid);
   console.log('OK: portfolio caricato con', folders.length, 'cartelle,', singles.length, 'singole');
 });
-
-// --- Lightbox ---
-let lightboxEl = null;
-
-function openLightbox(src) {
-  if (!lightboxEl) {
-    lightboxEl = document.createElement('div');
-    lightboxEl.className = 'lightbox';
-
-    const closeBtn = document.createElement('span');
-    closeBtn.className = 'lightbox-close';
-    closeBtn.innerHTML = '&times;';
-    closeBtn.addEventListener('click', closeLightbox);
-    lightboxEl.appendChild(closeBtn);
-
-    const img = document.createElement('img');
-    img.id = 'lightbox-img';
-    img.alt = '';
-    lightboxEl.appendChild(img);
-
-    lightboxEl.addEventListener('click', (e) => {
-      if (e.target === lightboxEl) closeLightbox();
-    });
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeLightbox();
-    });
-
-    document.body.appendChild(lightboxEl);
-  }
-
-  const img = document.getElementById('lightbox-img');
-  img.src = src;
-  lightboxEl.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeLightbox() {
-  if (!lightboxEl) return;
-  lightboxEl.classList.remove('active');
-  document.body.style.overflow = '';
-}

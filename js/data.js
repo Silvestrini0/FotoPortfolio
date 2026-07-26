@@ -18,6 +18,21 @@ var portfolioData = [
       "img/07-12-2025/07-12-25-12.jpg",
       "img/07-12-2025/07-12-25-13.jpg"
     ],
+    "thumbs": [
+      "img/thumbs/07-12-2025/07-12-25-01.jpg",
+      "img/thumbs/07-12-2025/07-12-25-02.jpg",
+      "img/thumbs/07-12-2025/07-12-25-03.jpg",
+      "img/thumbs/07-12-2025/07-12-25-04.jpg",
+      "img/thumbs/07-12-2025/07-12-25-05.jpg",
+      "img/thumbs/07-12-2025/07-12-25-06.jpg",
+      "img/thumbs/07-12-2025/07-12-25-07.jpg",
+      "img/thumbs/07-12-2025/07-12-25-08.jpg",
+      "img/thumbs/07-12-2025/07-12-25-09.jpg",
+      "img/thumbs/07-12-2025/07-12-25-10.jpg",
+      "img/thumbs/07-12-2025/07-12-25-11.jpg",
+      "img/thumbs/07-12-2025/07-12-25-12.jpg",
+      "img/thumbs/07-12-2025/07-12-25-13.jpg"
+    ],
     "cover": "img/07-12-2025/07-12-25-01.jpg",
     "coverThumb": "img/thumbs/07-12-2025/07-12-25-01.jpg"
   },
@@ -34,6 +49,16 @@ var portfolioData = [
       "img/10-03-2026/10-03-2025-7.jpg",
       "img/10-03-2026/10-03-2025-8.jpg"
     ],
+    "thumbs": [
+      "img/thumbs/10-03-2026/10-03-2025-1.jpg",
+      "img/thumbs/10-03-2026/10-03-2025-2.jpg",
+      "img/thumbs/10-03-2026/10-03-2025-3.jpg",
+      "img/thumbs/10-03-2026/10-03-2025-4.jpg",
+      "img/thumbs/10-03-2026/10-03-2025-5.jpg",
+      "img/thumbs/10-03-2026/10-03-2025-6.jpg",
+      "img/thumbs/10-03-2026/10-03-2025-7.jpg",
+      "img/thumbs/10-03-2026/10-03-2025-8.jpg"
+    ],
     "cover": "img/10-03-2026/10-03-2025-1.jpg",
     "coverThumb": "img/thumbs/10-03-2026/10-03-2025-1.jpg"
   },
@@ -47,6 +72,13 @@ var portfolioData = [
       "img/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.56.jpeg",
       "img/10-07-2026/WhatsApp Image 2026-07-10 at 21.53.35.jpeg"
     ],
+    "thumbs": [
+      "img/thumbs/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.41.jpeg",
+      "img/thumbs/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.46.jpeg",
+      "img/thumbs/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.55.jpeg",
+      "img/thumbs/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.56.jpeg",
+      "img/thumbs/10-07-2026/WhatsApp Image 2026-07-10 at 21.53.35.jpeg"
+    ],
     "cover": "img/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.41.jpeg",
     "coverThumb": "img/thumbs/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.41.jpeg"
   },
@@ -59,6 +91,13 @@ var portfolioData = [
       "img/25-04-2026/25-04-2025-3.jpg",
       "img/25-04-2026/25-04-2025-4.jpg",
       "img/25-04-2026/25-04-2025-5.jpg"
+    ],
+    "thumbs": [
+      "img/thumbs/25-04-2026/25-04-2025-1.jpg",
+      "img/thumbs/25-04-2026/25-04-2025-2.jpg",
+      "img/thumbs/25-04-2026/25-04-2025-3.jpg",
+      "img/thumbs/25-04-2026/25-04-2025-4.jpg",
+      "img/thumbs/25-04-2026/25-04-2025-5.jpg"
     ],
     "cover": "img/25-04-2026/25-04-2025-1.jpg",
     "coverThumb": "img/thumbs/25-04-2026/25-04-2025-1.jpg"

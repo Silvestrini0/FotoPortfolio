@@ -33,6 +33,21 @@ var portfolioData = [
       "img/thumbs/07-12-2025/07-12-25-12.jpg",
       "img/thumbs/07-12-2025/07-12-25-13.jpg"
     ],
+    "bwImages": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
     "cover": "img/07-12-2025/07-12-25-01.jpg",
     "coverThumb": "img/thumbs/07-12-2025/07-12-25-01.jpg"
   },
@@ -59,6 +74,16 @@ var portfolioData = [
       "img/thumbs/10-03-2026/10-03-2025-7.jpg",
       "img/thumbs/10-03-2026/10-03-2025-8.jpg"
     ],
+    "bwImages": [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
     "cover": "img/10-03-2026/10-03-2025-1.jpg",
     "coverThumb": "img/thumbs/10-03-2026/10-03-2025-1.jpg"
   },
@@ -79,6 +104,13 @@ var portfolioData = [
       "img/thumbs/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.56.jpeg",
       "img/thumbs/10-07-2026/WhatsApp Image 2026-07-10 at 21.53.35.jpeg"
     ],
+    "bwImages": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ],
     "cover": "img/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.41.jpeg",
     "coverThumb": "img/thumbs/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.41.jpeg"
   },
@@ -98,6 +130,13 @@ var portfolioData = [
       "img/thumbs/25-04-2026/25-04-2025-3.jpg",
       "img/thumbs/25-04-2026/25-04-2025-4.jpg",
       "img/thumbs/25-04-2026/25-04-2025-5.jpg"
+    ],
+    "bwImages": [
+      null,
+      null,
+      null,
+      null,
+      null
     ],
     "cover": "img/25-04-2026/25-04-2025-1.jpg",
     "coverThumb": "img/thumbs/25-04-2026/25-04-2025-1.jpg"

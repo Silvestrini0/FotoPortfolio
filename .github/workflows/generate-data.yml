@@ -21,14 +21,17 @@ jobs:
         with:
           node-version: 20
 
-      - name: Generate data.js
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate data.js and thumbnails
         run: node generate.js
 
       - name: Commit and push if changed
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git add js/data.js
+          git add js/data.js img/thumbs/
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

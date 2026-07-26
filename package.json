@@ -1,0 +1,10 @@
+{
+  "name": "fotoportfolio",
+  "private": true,
+  "scripts": {
+    "generate": "node generate.js"
+  },
+  "dependencies": {
+    "sharp": "^0.33.5"
+  }
+}

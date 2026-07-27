@@ -4,34 +4,24 @@ var portfolioData = [
     "id": "07-12-2025",
     "name": "07-12-2025",
     "images": [
-      "img/07-12-2025/07-12-25-01.jpg",
-      "img/07-12-2025/07-12-25-02.jpg",
-      "img/07-12-2025/07-12-25-03.jpg",
-      "img/07-12-2025/07-12-25-04.jpg",
-      "img/07-12-2025/07-12-25-05.jpg",
-      "img/07-12-2025/07-12-25-06.jpg",
-      "img/07-12-2025/07-12-25-07.jpg",
-      "img/07-12-2025/07-12-25-08.jpg",
-      "img/07-12-2025/07-12-25-09.jpg",
-      "img/07-12-2025/07-12-25-10.jpg",
-      "img/07-12-2025/07-12-25-11.jpg",
-      "img/07-12-2025/07-12-25-12.jpg",
-      "img/07-12-2025/07-12-25-13.jpg"
+      "img/07-12-2025/Cantante-03.jpg",
+      "img/07-12-2025/Cantante-04.jpg",
+      "img/07-12-2025/Cantante-05.jpg",
+      "img/07-12-2025/Cantante-06.jpg",
+      "img/07-12-2025/Cantante-07.jpg",
+      "img/07-12-2025/Cantante-08.jpg",
+      "img/07-12-2025/Cantante-09.jpg",
+      "img/07-12-2025/Cantante-10.jpg"
     ],
     "thumbs": [
-      "img/thumbs/07-12-2025/07-12-25-01.jpg",
-      "img/thumbs/07-12-2025/07-12-25-02.jpg",
-      "img/thumbs/07-12-2025/07-12-25-03.jpg",
-      "img/thumbs/07-12-2025/07-12-25-04.jpg",
-      "img/thumbs/07-12-2025/07-12-25-05.jpg",
-      "img/thumbs/07-12-2025/07-12-25-06.jpg",
-      "img/thumbs/07-12-2025/07-12-25-07.jpg",
-      "img/thumbs/07-12-2025/07-12-25-08.jpg",
-      "img/thumbs/07-12-2025/07-12-25-09.jpg",
-      "img/thumbs/07-12-2025/07-12-25-10.jpg",
-      "img/thumbs/07-12-2025/07-12-25-11.jpg",
-      "img/thumbs/07-12-2025/07-12-25-12.jpg",
-      "img/thumbs/07-12-2025/07-12-25-13.jpg"
+      "img/thumbs/07-12-2025/Cantante-03.jpg",
+      "img/thumbs/07-12-2025/Cantante-04.jpg",
+      "img/thumbs/07-12-2025/Cantante-05.jpg",
+      "img/thumbs/07-12-2025/Cantante-06.jpg",
+      "img/thumbs/07-12-2025/Cantante-07.jpg",
+      "img/thumbs/07-12-2025/Cantante-08.jpg",
+      "img/thumbs/07-12-2025/Cantante-09.jpg",
+      "img/thumbs/07-12-2025/Cantante-10.jpg"
     ],
     "bwImages": [
       null,
@@ -41,15 +31,20 @@ var portfolioData = [
       null,
       null,
       null,
-      null,
-      null,
-      null,
-      null,
-      null,
       null
     ],
-    "cover": "img/07-12-2025/07-12-25-01.jpg",
-    "coverThumb": "img/thumbs/07-12-2025/07-12-25-01.jpg"
+    "orientations": [
+      "portrait",
+      "portrait",
+      "landscape",
+      "portrait",
+      "portrait",
+      "portrait",
+      "portrait",
+      "landscape"
+    ],
+    "cover": "img/07-12-2025/Cantante-03.jpg",
+    "coverThumb": "img/thumbs/07-12-2025/Cantante-03.jpg"
   },
   {
     "id": "10-03-2026",
@@ -84,6 +79,16 @@ var portfolioData = [
       null,
       null
     ],
+    "orientations": [
+      "landscape",
+      "landscape",
+      "landscape",
+      "landscape",
+      "landscape",
+      "landscape",
+      "landscape",
+      "landscape"
+    ],
     "cover": "img/10-03-2026/10-03-2025-1.jpg",
     "coverThumb": "img/thumbs/10-03-2026/10-03-2025-1.jpg"
   },
@@ -110,6 +115,13 @@ var portfolioData = [
       null,
       null,
       null
+    ],
+    "orientations": [
+      "landscape",
+      "landscape",
+      "landscape",
+      "landscape",
+      "landscape"
     ],
     "cover": "img/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.41.jpeg",
     "coverThumb": "img/thumbs/10-07-2026/WhatsApp Image 2026-07-10 at 21.51.41.jpeg"
@@ -138,6 +150,13 @@ var portfolioData = [
       null,
       null
     ],
+    "orientations": [
+      "landscape",
+      "landscape",
+      "landscape",
+      "landscape",
+      "landscape"
+    ],
     "cover": "img/25-04-2026/25-04-2025-1.jpg",
     "coverThumb": "img/thumbs/25-04-2026/25-04-2025-1.jpg"
   }
@@ -148,6 +167,7 @@ var singoleData = [
     "src": "img/fotoSingole/Cantante-1.jpg",
     "thumb": "img/thumbs/fotoSingole/Cantante-1.jpg",
     "bwSrc": "img/fotoSingole/Cantante-1-BW.jpg",
-    "bwThumb": "img/thumbs/fotoSingole/Cantante-1-BW.jpg"
+    "bwThumb": "img/thumbs/fotoSingole/Cantante-1-BW.jpg",
+    "orientation": "landscape"
   }
 ];

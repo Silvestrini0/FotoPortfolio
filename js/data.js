@@ -145,21 +145,9 @@ var portfolioData = [
 
 var singoleData = [
   {
-    "src": "img/fotoSingole/Cantante-1-2.jpg",
-    "thumb": "img/thumbs/fotoSingole/Cantante-1-2.jpg",
-    "bwSrc": null,
-    "bwThumb": null
-  },
-  {
     "src": "img/fotoSingole/Cantante-1.jpg",
     "thumb": "img/thumbs/fotoSingole/Cantante-1.jpg",
     "bwSrc": "img/fotoSingole/Cantante-1-BW.jpg",
     "bwThumb": "img/thumbs/fotoSingole/Cantante-1-BW.jpg"
-  },
-  {
-    "src": "img/fotoSingole/Cantante-2.jpg",
-    "thumb": "img/thumbs/fotoSingole/Cantante-2.jpg",
-    "bwSrc": null,
-    "bwThumb": null
   }
 ];

@@ -171,6 +171,7 @@ function buildLightbox() {
         <button class="lb-zoom-btn" id="lb-zoom-in">+</button>
       </div>
       <button class="lb-bw-btn" id="lb-bw-btn">BW</button>
+      <span class="lb-format-label">Formato jpg piccolo</span>
     </div>
   `;
   document.body.appendChild(lightboxEl);
@@ -345,11 +346,30 @@ function applyTransform() {
 }
 
 function closeLightbox() {
-  if (!lightboxEl) return;
-  lightboxEl.classList.remove('active');
-  document.body.style.overflow = '';
-  lbGallery = null;
-  lbIndex = -1;
+  if (!lightboxEl || lightboxEl.classList.contains('closing')) return;
+  const wrapper = byId('lb-wrapper');
+  if (wrapper) {
+    lightboxEl.classList.add('closing');
+    if (lbState.zoomLevel > 1) {
+      wrapper.style.transition = 'opacity 0.25s ease';
+      wrapper.style.opacity = '0';
+    } else {
+      wrapper.style.transition = 'transform 0.25s ease, opacity 0.25s ease';
+      wrapper.style.transform = 'scale(0.92)';
+      wrapper.style.opacity = '0';
+    }
+  }
+  setTimeout(() => {
+    lightboxEl.classList.remove('active', 'closing');
+    document.body.style.overflow = '';
+    lbGallery = null;
+    lbIndex = -1;
+    if (wrapper) {
+      wrapper.style.transition = '';
+      wrapper.style.transform = '';
+      wrapper.style.opacity = '';
+    }
+  }, 250);
 }
 
 window.openLightbox = openLightbox;

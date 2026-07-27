@@ -4,6 +4,11 @@ let lightboxEl = null;
 let lbState = { showBW: false, zoom: false, hasBW: false, zoomLevel: 1, panX: 0, panY: 0 };
 let isDragging = false, dragStartX, dragStartY, dragOrigX, dragOrigY;
 let lbGallery = null, lbIndex = -1;
+let navCooldown = false;
+
+// Touch state
+let tMode = null; // 'pan' | 'swipe' | 'pinch'
+let tStartX, tStartY, tPinchDist;
 
 function byId(id) { return document.getElementById(id); }
 
@@ -12,7 +17,7 @@ function openLightbox(thumbSrc, fullSrc, bwSrc) {
   lbGallery = null;
   lbIndex = -1;
   resetState();
-  showImage(fullSrc, bwSrc);
+  showImage(fullSrc, bwSrc, true);
   updateToolbar();
   if (lightboxEl) lightboxEl.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -22,8 +27,9 @@ function openGalleryLightbox(gallery, index) {
   if (!lightboxEl) buildLightbox();
   lbGallery = gallery;
   lbIndex = index;
+  preloadNeighbors();
   resetState();
-  showImage(lbGallery[lbIndex].full, lbGallery[lbIndex].bw);
+  showImage(lbGallery[lbIndex].full, lbGallery[lbIndex].bw, true);
   updateToolbar();
   if (lightboxEl) lightboxEl.classList.add('active');
   document.body.style.overflow = 'hidden';
@@ -44,23 +50,50 @@ function resetState() {
   byId('lb-viewport').classList.remove('zoomed');
 }
 
-function showImage(src, bwSrc) {
+function showImage(src, bwSrc, instant) {
   lbState.hasBW = !!bwSrc;
   lbState.showBW = false;
   const wrapper = byId('lb-wrapper');
   if (wrapper) wrapper.classList.remove('show-bw');
+
   const colorImg = byId('lb-img');
-  if (colorImg) colorImg.src = src;
   const bwImg = byId('lb-bw');
   if (bwImg) bwImg.src = bwSrc || '';
+
+  if (colorImg) {
+    if (instant) {
+      colorImg.style.transition = 'none';
+      colorImg.src = src;
+      colorImg.style.opacity = '1';
+      return;
+    }
+    colorImg.style.transition = 'none';
+    colorImg.style.opacity = '0';
+    colorImg.src = src;
+    colorImg.offsetHeight;
+    colorImg.style.transition = '';
+    colorImg.style.opacity = '1';
+  }
+}
+
+function preloadNeighbors() {
+  if (!lbGallery) return;
+  [-1, 1].forEach(dir => {
+    const ni = (lbIndex + dir + lbGallery.length) % lbGallery.length;
+    const img = new Image();
+    img.src = lbGallery[ni].full;
+  });
 }
 
 function navigate(dir) {
-  if (!lbGallery) return;
+  if (!lbGallery || navCooldown) return;
+  navCooldown = true;
   lbIndex = (lbIndex + dir + lbGallery.length) % lbGallery.length;
   resetState();
-  showImage(lbGallery[lbIndex].full, lbGallery[lbIndex].bw);
+  showImage(lbGallery[lbIndex].full, lbGallery[lbIndex].bw, false);
   updateToolbar();
+  preloadNeighbors();
+  setTimeout(() => { navCooldown = false; }, 300);
 }
 
 function updateToolbar() {
@@ -69,6 +102,8 @@ function updateToolbar() {
   const counter = byId('lb-counter');
   const bwBtn = byId('lb-bw-btn');
   const toolbar = byId('lb-toolbar');
+  const zoomIn = byId('lb-zoom-in');
+  const zoomOut = byId('lb-zoom-out');
 
   if (lbGallery && lbGallery.length > 1) {
     if (toolbar) toolbar.style.display = '';
@@ -86,6 +121,25 @@ function updateToolbar() {
     bwBtn.style.display = lbState.hasBW ? '' : 'none';
     bwBtn.classList.toggle('active', lbState.showBW);
   }
+
+  if (zoomIn) { zoomIn.style.display = ''; zoomIn.onclick = zoomStepIn; }
+  if (zoomOut) { zoomOut.style.display = ''; zoomOut.onclick = zoomStepOut; }
+}
+
+function zoomStepIn() {
+  stepZoom(0.4);
+}
+
+function zoomStepOut() {
+  stepZoom(-0.4);
+}
+
+function stepZoom(delta) {
+  const newLevel = Math.max(1, Math.min(5, lbState.zoomLevel + delta));
+  if (newLevel === lbState.zoomLevel) return;
+  lbState.zoomLevel = newLevel;
+  lbState.zoom = newLevel > 1;
+  applyTransform();
 }
 
 function toggleBW() {
@@ -112,6 +166,10 @@ function buildLightbox() {
       <button class="lightbox-arrow" id="lb-prev">‹</button>
       <span id="lb-counter"></span>
       <button class="lightbox-arrow" id="lb-next">›</button>
+      <div class="lb-zoom-group">
+        <button class="lb-zoom-btn" id="lb-zoom-out">−</button>
+        <button class="lb-zoom-btn" id="lb-zoom-in">+</button>
+      </div>
       <button class="lb-bw-btn" id="lb-bw-btn">BW</button>
     </div>
   `;
@@ -120,27 +178,34 @@ function buildLightbox() {
   lightboxEl.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
   lightboxEl.addEventListener('click', e => { if (e.target === lightboxEl) closeLightbox(); });
 
-  // BW toggle button
   byId('lb-bw-btn').addEventListener('click', toggleBW);
 
   // Wheel zoom
   lightboxEl.querySelector('#lb-viewport').addEventListener('wheel', onWheel, { passive: false });
 
-  // Drag pan
+  // Mouse drag pan
   const wrapper = lightboxEl.querySelector('#lb-wrapper');
   wrapper.addEventListener('mousedown', onDragStart);
   document.addEventListener('mousemove', onDragMove);
   document.addEventListener('mouseup', onDragEnd);
+
+  // Touch
   wrapper.addEventListener('touchstart', onTouchStart, { passive: false });
   document.addEventListener('touchmove', onTouchMove, { passive: false });
-  document.addEventListener('touchend', onTouchEnd);
+  document.addEventListener('touchend', onTouchEnd, { passive: false });
+  document.addEventListener('touchcancel', onTouchEnd);
 
-  // Double-click to reset zoom
+  // Double-click to toggle zoom
   wrapper.addEventListener('dblclick', () => {
-    lbState.zoomLevel = 1;
-    lbState.zoom = false;
-    lbState.panX = 0;
-    lbState.panY = 0;
+    if (lbState.zoomLevel > 1) {
+      lbState.zoomLevel = 1;
+      lbState.zoom = false;
+      lbState.panX = 0;
+      lbState.panY = 0;
+    } else {
+      lbState.zoomLevel = 2;
+      lbState.zoom = true;
+    }
     applyTransform();
   });
 
@@ -150,19 +215,18 @@ function buildLightbox() {
     if (e.key === 'ArrowLeft') navigate(-1);
     if (e.key === 'ArrowRight') navigate(1);
     if (e.key === 'b' || e.key === 'B') toggleBW();
+    if (e.key === '+' || e.key === '=') zoomStepIn();
+    if (e.key === '-' || e.key === '_') zoomStepOut();
   });
 }
 
+// --- Wheel zoom ---
 function onWheel(e) {
   e.preventDefault();
-  const delta = e.deltaY > 0 ? -0.2 : 0.2;
-  const newLevel = Math.max(1, Math.min(5, lbState.zoomLevel + delta));
-  if (newLevel === lbState.zoomLevel) return;
-  lbState.zoomLevel = newLevel;
-  lbState.zoom = newLevel > 1;
-  applyTransform();
+  stepZoom(e.deltaY > 0 ? -0.2 : 0.2);
 }
 
+// --- Mouse pan ---
 function onDragStart(e) {
   if (lbState.zoomLevel <= 1) return;
   isDragging = true;
@@ -187,25 +251,82 @@ function onDragEnd() {
   if (byId('lb-wrapper')) byId('lb-wrapper').style.cursor = lbState.zoomLevel > 1 ? 'grab' : '';
 }
 
+// --- Touch ---
 function onTouchStart(e) {
-  if (lbState.zoomLevel <= 1 || e.touches.length !== 1) return;
-  isDragging = true;
-  dragStartX = e.touches[0].clientX;
-  dragStartY = e.touches[0].clientY;
-  dragOrigX = lbState.panX;
-  dragOrigY = lbState.panY;
+  if (e.touches.length === 2) {
+    tMode = 'pinch';
+    tPinchDist = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+    return;
+  }
+  if (e.touches.length !== 1) return;
+  tStartX = e.touches[0].clientX;
+  tStartY = e.touches[0].clientY;
+
+  if (lbState.zoomLevel > 1) {
+    tMode = 'pan';
+    isDragging = true;
+    dragStartX = tStartX;
+    dragStartY = tStartY;
+    dragOrigX = lbState.panX;
+    dragOrigY = lbState.panY;
+  } else if (lbGallery && lbGallery.length > 1) {
+    tMode = 'swipe';
+  } else {
+    tMode = null;
+  }
 }
 
 function onTouchMove(e) {
-  if (!isDragging || e.touches.length !== 1) return;
-  lbState.panX = dragOrigX + (e.touches[0].clientX - dragStartX);
-  lbState.panY = dragOrigY + (e.touches[0].clientY - dragStartY);
-  applyTransform();
-  e.preventDefault();
+  if (tMode === 'pinch' && e.touches.length === 2) {
+    e.preventDefault();
+    const dist = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+    const ratio = dist / (tPinchDist || 1);
+    tPinchDist = dist;
+    const newLevel = Math.max(1, Math.min(5, lbState.zoomLevel * ratio));
+    if (newLevel !== lbState.zoomLevel) {
+      lbState.zoomLevel = newLevel;
+      lbState.zoom = newLevel > 1;
+      applyTransform();
+    }
+    return;
+  }
+  if (tMode === 'pan' && isDragging && e.touches.length === 1) {
+    e.preventDefault();
+    lbState.panX = dragOrigX + (e.touches[0].clientX - dragStartX);
+    lbState.panY = dragOrigY + (e.touches[0].clientY - dragStartY);
+    applyTransform();
+    return;
+  }
+  if (tMode === 'swipe' && e.touches.length === 1) {
+    const dx = e.touches[0].clientX - tStartX;
+    const dy = e.touches[0].clientY - tStartY;
+    if (Math.abs(dx) > 20 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      e.preventDefault();
+    }
+  }
 }
 
-function onTouchEnd() { isDragging = false; }
+function onTouchEnd(e) {
+  if (tMode === 'swipe' && e.changedTouches.length === 1) {
+    const dx = e.changedTouches[0].clientX - tStartX;
+    const dy = e.changedTouches[0].clientY - tStartY;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      e.preventDefault();
+      navigate(dx > 0 ? -1 : 1);
+    }
+  }
+  tMode = null;
+  isDragging = false;
+  tPinchDist = 0;
+}
 
+// --- Transform ---
 function applyTransform() {
   const wrapper = byId('lb-wrapper');
   if (!wrapper) return;

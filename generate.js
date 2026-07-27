@@ -29,7 +29,7 @@ function formatName(folderName) {
 }
 
 async function ensureThumb(inputPath, outputPath) {
-  if (!sharp) return inputPath;
+  if (!sharp) return null;
   if (fs.existsSync(outputPath)) return outputPath;
   const dir = path.dirname(outputPath);
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -41,6 +41,16 @@ async function ensureThumb(inputPath, outputPath) {
     console.warn(`  ⚠ thumbnail fallito: ${path.basename(inputPath)}`);
   }
   return outputPath;
+}
+
+async function getOrientation(inputPath) {
+  if (!sharp) return 'landscape';
+  try {
+    const meta = await sharp(inputPath).metadata();
+    return meta.width >= meta.height ? 'landscape' : 'portrait';
+  } catch {
+    return 'landscape';
+  }
 }
 
 function isBWFile(filename) {
@@ -55,7 +65,7 @@ async function generate() {
     .filter(e => e.isDirectory() && e.name.toLowerCase() !== 'thumbs' && e.name.toLowerCase() !== 'fotosingole')
     .sort();
 
-  // --- Folder data (existing behavior + thumbnails) ---
+  // --- Folder data ---
   const data = [];
   for (const folder of folders) {
     const folderPath = path.join(imgDir, folder.name);
@@ -74,9 +84,11 @@ async function generate() {
       return files.includes(bwFile) ? `img/${folder.name}/${bwFile}` : null;
     });
 
+    const orientations = [];
     for (const f of colorFiles) {
+      const inputPath = path.join(imgDir, folder.name, f);
       await ensureThumb(
-        path.join(imgDir, folder.name, f),
+        inputPath,
         path.join(thumbDir, folder.name, f)
       );
       const ext = path.extname(f);
@@ -88,6 +100,7 @@ async function generate() {
           path.join(thumbDir, folder.name, bwFile)
         );
       }
+      orientations.push(await getOrientation(inputPath));
     }
 
     data.push({
@@ -96,6 +109,7 @@ async function generate() {
       images,
       thumbs: images.map(f => thumbUrl(f)),
       bwImages,
+      orientations,
       cover: images[0],
       coverThumb: thumbUrl(images[0])
     });
@@ -116,8 +130,9 @@ async function generate() {
       const bwFile = base + '-BW' + ext;
 
       const src = `img/fotoSingole/${file}`;
+      const inputPath = path.join(singoleDir, file);
       await ensureThumb(
-        path.join(singoleDir, file),
+        inputPath,
         path.join(thumbDir, 'fotoSingole', file)
       );
 
@@ -136,7 +151,8 @@ async function generate() {
         src,
         thumb: thumbUrl(src),
         bwSrc,
-        bwThumb
+        bwThumb,
+        orientation: await getOrientation(inputPath)
       });
     }
   }

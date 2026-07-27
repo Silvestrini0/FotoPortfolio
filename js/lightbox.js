@@ -3,45 +3,98 @@
 let lightboxEl = null;
 let lbState = { showBW: false, zoom: false, hasBW: false, zoomLevel: 1, panX: 0, panY: 0 };
 let isDragging = false, dragStartX, dragStartY, dragOrigX, dragOrigY;
+let lbGallery = null, lbIndex = -1;
 
 function byId(id) { return document.getElementById(id); }
 
 function openLightbox(thumbSrc, fullSrc, bwSrc) {
   if (!lightboxEl) buildLightbox();
+  lbGallery = null;
+  lbIndex = -1;
+  resetState();
+  showImage(fullSrc, bwSrc);
+  updateToolbar();
+  if (lightboxEl) lightboxEl.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
 
-  lbState.hasBW = !!bwSrc;
+function openGalleryLightbox(gallery, index) {
+  if (!lightboxEl) buildLightbox();
+  lbGallery = gallery;
+  lbIndex = index;
+  resetState();
+  showImage(lbGallery[lbIndex].full, lbGallery[lbIndex].bw);
+  updateToolbar();
+  if (lightboxEl) lightboxEl.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function resetState() {
   lbState.showBW = false;
   lbState.zoom = false;
   lbState.zoomLevel = 1;
   lbState.panX = 0;
   lbState.panY = 0;
-
   const wrapper = byId('lb-wrapper');
   if (wrapper) {
     wrapper.classList.remove('show-bw', 'zoomed');
     wrapper.style.transform = '';
     wrapper.style.cursor = '';
   }
-
   byId('lb-viewport').classList.remove('zoomed');
+}
 
+function showImage(src, bwSrc) {
+  lbState.hasBW = !!bwSrc;
+  lbState.showBW = false;
+  const wrapper = byId('lb-wrapper');
+  if (wrapper) wrapper.classList.remove('show-bw');
   const colorImg = byId('lb-img');
-  if (colorImg) {
-    colorImg.src = fullSrc;
-  }
-
+  if (colorImg) colorImg.src = src;
   const bwImg = byId('lb-bw');
-  if (bwImg && bwSrc) {
-    bwImg.src = bwSrc;
-  }
+  if (bwImg) bwImg.src = bwSrc || '';
+}
 
+function navigate(dir) {
+  if (!lbGallery) return;
+  lbIndex = (lbIndex + dir + lbGallery.length) % lbGallery.length;
+  resetState();
+  showImage(lbGallery[lbIndex].full, lbGallery[lbIndex].bw);
+  updateToolbar();
+}
+
+function updateToolbar() {
   const prev = byId('lb-prev');
   const next = byId('lb-next');
-  if (prev) prev.style.display = bwSrc ? '' : 'none';
-  if (next) next.style.display = bwSrc ? '' : 'none';
+  const counter = byId('lb-counter');
+  const bwBtn = byId('lb-bw-btn');
+  const toolbar = byId('lb-toolbar');
 
-  if (lightboxEl) lightboxEl.classList.add('active');
-  document.body.style.overflow = 'hidden';
+  if (lbGallery && lbGallery.length > 1) {
+    if (toolbar) toolbar.style.display = '';
+    if (prev) { prev.style.display = ''; prev.onclick = () => navigate(-1); }
+    if (next) { next.style.display = ''; next.onclick = () => navigate(1); }
+    if (counter) counter.textContent = (lbIndex + 1) + ' / ' + lbGallery.length;
+  } else {
+    if (toolbar) toolbar.style.display = lbState.hasBW ? '' : 'none';
+    if (prev) prev.style.display = 'none';
+    if (next) next.style.display = 'none';
+    if (counter) counter.textContent = '';
+  }
+
+  if (bwBtn) {
+    bwBtn.style.display = lbState.hasBW ? '' : 'none';
+    bwBtn.classList.toggle('active', lbState.showBW);
+  }
+}
+
+function toggleBW() {
+  if (!lbState.hasBW) return;
+  lbState.showBW = !lbState.showBW;
+  const wrapper = byId('lb-wrapper');
+  if (wrapper) wrapper.classList.toggle('show-bw', lbState.showBW);
+  const bwBtn = byId('lb-bw-btn');
+  if (bwBtn) bwBtn.classList.toggle('active', lbState.showBW);
 }
 
 function buildLightbox() {
@@ -55,9 +108,11 @@ function buildLightbox() {
         <img id="lb-bw" class="lb-bw" alt="">
       </div>
     </div>
-    <div class="lightbox-toolbar">
-      <button class="lightbox-arrow" id="lb-prev" style="display:none">‹</button>
-      <button class="lightbox-arrow" id="lb-next" style="display:none">›</button>
+    <div class="lightbox-toolbar" id="lb-toolbar" style="display:none">
+      <button class="lightbox-arrow" id="lb-prev">‹</button>
+      <span id="lb-counter"></span>
+      <button class="lightbox-arrow" id="lb-next">›</button>
+      <button class="lb-bw-btn" id="lb-bw-btn">BW</button>
     </div>
   `;
   document.body.appendChild(lightboxEl);
@@ -65,8 +120,8 @@ function buildLightbox() {
   lightboxEl.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
   lightboxEl.addEventListener('click', e => { if (e.target === lightboxEl) closeLightbox(); });
 
-  lightboxEl.querySelector('#lb-prev').addEventListener('click', () => slideBW(-1));
-  lightboxEl.querySelector('#lb-next').addEventListener('click', () => slideBW(1));
+  // BW toggle button
+  byId('lb-bw-btn').addEventListener('click', toggleBW);
 
   // Wheel zoom
   lightboxEl.querySelector('#lb-viewport').addEventListener('wheel', onWheel, { passive: false });
@@ -92,8 +147,9 @@ function buildLightbox() {
   document.addEventListener('keydown', e => {
     if (!lightboxEl || !lightboxEl.classList.contains('active')) return;
     if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft' && lbState.hasBW) slideBW(-1);
-    if (e.key === 'ArrowRight' && lbState.hasBW) slideBW(1);
+    if (e.key === 'ArrowLeft') navigate(-1);
+    if (e.key === 'ArrowRight') navigate(1);
+    if (e.key === 'b' || e.key === 'B') toggleBW();
   });
 }
 
@@ -167,23 +223,14 @@ function applyTransform() {
   }
 }
 
-function slideBW(dir) {
-  const wrapper = byId('lb-wrapper');
-  if (!wrapper) return;
-  if (dir > 0 && !lbState.showBW) {
-    lbState.showBW = true;
-    wrapper.classList.add('show-bw');
-  } else if (dir < 0 && lbState.showBW) {
-    lbState.showBW = false;
-    wrapper.classList.remove('show-bw');
-  }
-}
-
 function closeLightbox() {
   if (!lightboxEl) return;
   lightboxEl.classList.remove('active');
   document.body.style.overflow = '';
+  lbGallery = null;
+  lbIndex = -1;
 }
 
 window.openLightbox = openLightbox;
+window.openGalleryLightbox = openGalleryLightbox;
 window.closeLightbox = closeLightbox;

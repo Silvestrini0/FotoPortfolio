@@ -446,6 +446,7 @@ footer p {
   inset: 0;
   overflow: hidden;
   cursor: pointer;
+  padding: 40px;
 }
 
 .lightbox-viewport.zoomed {
@@ -517,7 +518,7 @@ footer p {
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   z-index: 1001;
 }
 
@@ -525,9 +526,9 @@ footer p {
   background: rgba(255,255,255,0.08);
   border: 1px solid rgba(255,255,255,0.15);
   color: #fff;
-  font-size: 22px;
-  width: 44px;
-  height: 44px;
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -538,6 +539,41 @@ footer p {
 }
 
 .lightbox-arrow:hover {
+  background: rgba(255,255,255,0.18);
+  border-color: rgba(255,255,255,0.4);
+}
+
+#lb-counter {
+  font-size: 12px;
+  letter-spacing: 2px;
+  opacity: 0.5;
+  white-space: nowrap;
+  min-width: 48px;
+  text-align: center;
+}
+
+.lb-bw-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  opacity: 0.5;
+  margin-left: 8px;
+}
+
+.lb-bw-btn:hover {
+  opacity: 1;
+  border-color: rgba(255,255,255,0.4);
+}
+
+.lb-bw-btn.active {
+  opacity: 1;
   background: rgba(255,255,255,0.18);
   border-color: rgba(255,255,255,0.4);
 }
@@ -628,5 +664,9 @@ footer p {
 
   .feed {
     max-width: 100%;
+  }
+
+  .lightbox-viewport {
+    padding: 12px;
   }
 }

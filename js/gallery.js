@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const folderId = params.get('folder');
 
@@ -19,42 +19,34 @@ document.addEventListener('DOMContentLoaded', async () => {
   const feed = document.getElementById('feed');
   if (!feed) return;
 
-  feed.innerHTML = '<p class="loading-text">Caricamento...</p>';
-
   const hasThumbs = folder.thumbs && folder.thumbs.length === folder.images.length;
+  const hasOrientations = folder.orientations && folder.orientations.length === folder.images.length;
+  const hasBw = folder.bwImages && folder.bwImages.length === folder.images.length;
 
-  const imageInfos = await Promise.all(folder.images.map((src, i) => {
-    return new Promise(resolve => {
-      const img = new Image();
-      img.onload = () => resolve({
-        full: src,
-        thumb: hasThumbs ? folder.thumbs[i] : src,
-        alt: `${folder.name} - ${i + 1}`,
-        isPortrait: img.naturalHeight > img.naturalWidth
-      });
-      img.onerror = () => resolve({
-        full: src,
-        thumb: hasThumbs ? folder.thumbs[i] : src,
-        alt: `${folder.name} - ${i + 1}`,
-        isPortrait: false
-      });
-      img.src = src;
-    });
+  // Build image info synchronously from data (no preloading)
+  const imageInfos = folder.images.map((src, i) => ({
+    full: src,
+    thumb: hasThumbs ? folder.thumbs[i] : src,
+    alt: `${folder.name} - ${i + 1}`,
+    isPortrait: hasOrientations ? folder.orientations[i] === 'portrait' : true
+  }));
+
+  // Build gallery items for lightbox navigation
+  const galleryItems = imageInfos.map((info, i) => ({
+    full: info.full,
+    thumb: info.thumb,
+    bw: hasBw ? folder.bwImages[i] : null
   }));
 
   feed.innerHTML = '';
 
-  const hasBw = folder.bwImages && folder.bwImages.length === folder.images.length;
-
   for (let i = 0; i < imageInfos.length; i++) {
     const cur = imageInfos[i];
     const nxt = imageInfos[i + 1];
-    const bwSrc = hasBw ? folder.bwImages[i] : null;
 
     if (cur.isPortrait && nxt && nxt.isPortrait) {
       const row = document.createElement('div');
       row.className = 'feed-row duo';
-      const nxtBw = hasBw ? folder.bwImages[i + 1] : null;
 
       [cur, nxt].forEach((info, j) => {
         const img = document.createElement('img');
@@ -63,8 +55,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         img.alt = info.alt;
         img.loading = 'lazy';
         img.onerror = function () { this.src = info.full; };
-        const b = j === 0 ? bwSrc : nxtBw;
-        img.addEventListener('click', () => window.openLightbox(info.thumb, info.full, b));
+        const idx = i + j;
+        img.addEventListener('click', () => window.openGalleryLightbox(galleryItems, idx));
         row.appendChild(img);
       });
 
@@ -77,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       img.alt = cur.alt;
       img.loading = 'lazy';
       img.onerror = function () { this.src = cur.full; };
-      img.addEventListener('click', () => window.openLightbox(cur.thumb, cur.full, bwSrc));
+      img.addEventListener('click', () => window.openGalleryLightbox(galleryItems, i));
       feed.appendChild(img);
     }
   }
